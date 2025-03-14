@@ -3,15 +3,17 @@ package com.leverx.ratingsystem.model.user;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
 @Data
+@Table(name = "users")
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
+    @Column(name = "user_id")
     private UUID id;
 
     private String nickname;
@@ -24,7 +26,7 @@ public class User {
 
     private String email;
 
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     private Role role;
 

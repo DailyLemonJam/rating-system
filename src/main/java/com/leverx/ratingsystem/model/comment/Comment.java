@@ -4,7 +4,7 @@ import com.leverx.ratingsystem.model.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -17,11 +17,12 @@ public class Comment {
     @Column(name = "comment_id")
     private UUID id;
 
+    @Column(columnDefinition = "TEXT")
     private String message;
 
     private int grade;
 
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

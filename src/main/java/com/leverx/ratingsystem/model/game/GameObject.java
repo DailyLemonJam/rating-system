@@ -4,7 +4,7 @@ import com.leverx.ratingsystem.model.user.User;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -27,10 +27,11 @@ public class GameObject {
 
     private String title;
 
+    @Column(columnDefinition = "TEXT")
     private String description;
 
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
-    private LocalDateTime updatedAt;
+    private Instant updatedAt;
 
 }

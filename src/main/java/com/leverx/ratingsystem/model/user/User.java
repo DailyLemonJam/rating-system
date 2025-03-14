@@ -3,7 +3,7 @@ package com.leverx.ratingsystem.model.user;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 @Entity
@@ -26,7 +26,7 @@ public class User {
 
     private String email;
 
-    private LocalDateTime createdAt;
+    private Instant createdAt;
 
     private Role role;
 

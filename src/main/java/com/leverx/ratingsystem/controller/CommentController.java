@@ -3,6 +3,7 @@ package com.leverx.ratingsystem.controller;
 import com.leverx.ratingsystem.dto.comment.CommentDto;
 import com.leverx.ratingsystem.dto.comment.UpdateCommentRequest;
 import com.leverx.ratingsystem.service.CommentService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -33,7 +34,7 @@ public class CommentController {
 
     @PutMapping("/{id}")
     public ResponseEntity<CommentDto> updateCommentById(@PathVariable UUID id,
-                                                        @RequestBody UpdateCommentRequest updateCommentRequest) {
+                                                        @Valid @RequestBody UpdateCommentRequest updateCommentRequest) {
         var commentDto = commentService.updateCommentById(id, updateCommentRequest);
         return new ResponseEntity<>(commentDto, HttpStatus.OK);
     }

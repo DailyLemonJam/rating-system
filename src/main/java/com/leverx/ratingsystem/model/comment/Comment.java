@@ -1,7 +1,10 @@
 package com.leverx.ratingsystem.model.comment;
 
+import com.leverx.ratingsystem.config.AppConfiguration;
 import com.leverx.ratingsystem.model.user.User;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
 
 import java.time.Instant;
@@ -20,6 +23,8 @@ public class Comment {
     @Column(columnDefinition = "TEXT")
     private String message;
 
+    @Min(AppConfiguration.MIN_GRADE)
+    @Max(AppConfiguration.MAX_GRADE)
     private int grade;
 
     private Instant createdAt;

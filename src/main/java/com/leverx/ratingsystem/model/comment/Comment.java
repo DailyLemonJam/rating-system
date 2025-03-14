@@ -9,10 +9,12 @@ import java.util.UUID;
 
 @Entity
 @Data
+@Table(name = "comments")
 public class Comment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "comment_id")
     private UUID id;
 
     private String message;
@@ -22,6 +24,7 @@ public class Comment {
     private LocalDateTime createdAt;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User seller;
 
     private CommentStatus status;

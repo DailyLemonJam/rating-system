@@ -9,16 +9,20 @@ import java.util.UUID;
 
 @Entity
 @Data
+@Table(name = "gameobjects")
 public class GameObject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "gameobject_id")
     private UUID id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User owner;
 
     @ManyToOne
+    @JoinColumn(name = "game_id")
     private Game game;
 
     private String title;

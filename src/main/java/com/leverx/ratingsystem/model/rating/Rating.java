@@ -12,7 +12,7 @@ import java.util.UUID;
 public class Rating {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "rating_id")
     private UUID id;
 

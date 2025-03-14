@@ -6,12 +6,12 @@ import com.leverx.ratingsystem.service.CommentService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
-@Controller("/comments")
+@RestController
+@RequestMapping("/comments")
 public class CommentController {
 
     private final CommentService commentService;

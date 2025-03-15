@@ -34,4 +34,6 @@ public class UserController {
         return new ResponseEntity<>(commentsDto, HttpStatus.OK);
     }
 
+    // TODO: list of objects Seller has
+
 }

@@ -18,7 +18,7 @@ public class Rating {
 
     @OneToOne
     @JoinColumn(name = "user_id")
-    private User seller;
+    private User user;
 
     private double totalRating;
 

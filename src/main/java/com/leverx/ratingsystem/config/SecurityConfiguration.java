@@ -35,7 +35,7 @@ public class SecurityConfiguration {
                         configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(configurer ->
                         configurer.authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED)));
-
+        return http.build();
     }
 
     @Bean

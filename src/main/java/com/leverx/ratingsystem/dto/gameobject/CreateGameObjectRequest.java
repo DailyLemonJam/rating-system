@@ -1,4 +1,5 @@
 package com.leverx.ratingsystem.dto.gameobject;
 
-public record CreateGameObjectRequest() {
+public record CreateGameObjectRequest(String title,
+                                      String description) {
 }

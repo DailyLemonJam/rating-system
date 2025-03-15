@@ -34,13 +34,15 @@ public class GameObjectController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<GameObjectDto> updateGameObjectById(@PathVariable UUID gameObjectId,
+    public ResponseEntity<GameObjectDto> updateGameObjectById(@PathVariable UUID id,
                                                               @Valid @RequestBody UpdateGameObjectRequest updateGameObjectRequest) {
-        // TODO: auth + service logic
+        var gameObjectDto = gameObjectService.updateGameObjectById(id, updateGameObjectRequest);
+        return new ResponseEntity<>(gameObjectDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteGameObjectById(@PathVariable UUID gameObjectId) {
-        // TODO: auth + service logic
+    public ResponseEntity<Void> deleteGameObjectById(@PathVariable UUID id) {
+        gameObjectService.deleteGameObjectById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

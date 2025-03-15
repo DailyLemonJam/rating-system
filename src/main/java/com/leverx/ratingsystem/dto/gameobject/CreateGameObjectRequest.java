@@ -1,5 +1,8 @@
 package com.leverx.ratingsystem.dto.gameobject;
 
+import java.util.UUID;
+
 public record CreateGameObjectRequest(String title,
-                                      String description) {
+                                      String description,
+                                      UUID gameId) {
 }

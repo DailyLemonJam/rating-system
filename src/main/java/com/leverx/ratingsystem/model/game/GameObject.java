@@ -2,7 +2,10 @@ package com.leverx.ratingsystem.model.game;
 
 import com.leverx.ratingsystem.model.user.User;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -10,6 +13,9 @@ import java.util.UUID;
 @Entity
 @Data
 @Table(name = "gameobjects")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class GameObject {
 
     @Id

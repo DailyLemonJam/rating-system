@@ -19,7 +19,7 @@ public class GameObject {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User owner;
+    private User user;
 
     @ManyToOne
     @JoinColumn(name = "game_id")

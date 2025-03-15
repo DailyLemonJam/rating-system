@@ -1,38 +1,77 @@
 package com.leverx.ratingsystem.service;
 
 import com.leverx.ratingsystem.dto.comment.CommentDto;
+import com.leverx.ratingsystem.dto.comment.CreateCommentRequest;
 import com.leverx.ratingsystem.dto.comment.UpdateCommentRequest;
 import com.leverx.ratingsystem.exception.CommentNotFoundException;
 import com.leverx.ratingsystem.exception.NotAllowedToUpdateCommentException;
+import com.leverx.ratingsystem.exception.UserNotFoundException;
 import com.leverx.ratingsystem.mapper.CommentMapper;
+import com.leverx.ratingsystem.model.comment.Comment;
 import com.leverx.ratingsystem.model.comment.CommentStatus;
+import com.leverx.ratingsystem.model.user.Role;
 import com.leverx.ratingsystem.repository.CommentRepository;
+import com.leverx.ratingsystem.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public class CommentService {
 
+    private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
 
-    public CommentService(CommentRepository commentRepository, CommentMapper commentMapper) {
+    public CommentService(UserRepository userRepository, CommentRepository commentRepository, CommentMapper commentMapper) {
+        this.userRepository = userRepository;
         this.commentRepository = commentRepository;
         this.commentMapper = commentMapper;
     }
 
-    public CommentDto getCommentById(UUID id) {
-        var comment = commentRepository.findById(id)
-                .orElseThrow(() -> new CommentNotFoundException("Can't find comment with id: " + id));
+    @Transactional(readOnly = true)
+    public CommentDto getCommentById(UUID commentId) {
+        var comment = commentRepository.findById(commentId)
+                .filter(com -> com.getStatus() == CommentStatus.APPROVED
+                        || com.getStatus() == CommentStatus.MODIFIED_AND_APPROVED)
+                .orElseThrow(() -> new CommentNotFoundException("Can't find comment with id: " + commentId));
         return commentMapper.toDto(comment);
     }
 
+    @Transactional(readOnly = true)
+    public List<CommentDto> getAllCommentsByUserId(UUID userId) {
+        userRepository.findById(userId).
+                filter(user -> user.getRole() == Role.SELLER).
+                orElseThrow(() -> new UserNotFoundException("Can't find user with id: " + userId));
+        var approvedComments = commentRepository.findByUserIdAndStatus(userId, CommentStatus.APPROVED);
+        var modifiedAndApprovedComments = commentRepository.findByUserIdAndStatus(userId, CommentStatus.MODIFIED_AND_APPROVED);
+        approvedComments.addAll(modifiedAndApprovedComments);
+        return commentMapper.toDto(approvedComments);
+    }
+
     @Transactional
-    public CommentDto updateCommentById(UUID id, UpdateCommentRequest updateCommentRequest) {
-        var comment = commentRepository.findById(id).
-                orElseThrow(() -> new CommentNotFoundException("Can't find comment with id: " + id));
+    public CommentDto createComment(UUID userId, CreateCommentRequest createCommentRequest) {
+        var seller = userRepository.findById(userId).
+                filter(user -> user.getRole() == Role.SELLER).
+                orElseThrow(() -> new UserNotFoundException("Can't find user with id: " + userId));
+        var comment = Comment.builder()
+                .user(seller)
+                .message(createCommentRequest.message())
+                .grade(createCommentRequest.grade())
+                .createdAt(Instant.now())
+                .status(CommentStatus.PENDING)
+                .build();
+        var newComment = commentRepository.save(comment);
+        return commentMapper.toDto(newComment);
+    }
+
+    @Transactional
+    public CommentDto updateCommentById(UUID commentId, UpdateCommentRequest updateCommentRequest) {
+        var comment = commentRepository.findById(commentId).
+                orElseThrow(() -> new CommentNotFoundException("Can't find comment with id: " + commentId));
         var commentStatus = comment.getStatus();
         if (commentStatus == CommentStatus.MODIFIED_AND_PENDING
                 || commentStatus == CommentStatus.MODIFIED_AND_APPROVED
@@ -48,12 +87,12 @@ public class CommentService {
     }
 
     @Transactional
-    public void deleteCommentById(UUID id) {
-        if (commentRepository.existsById(id)) {
-            commentRepository.deleteById(id);
+    public void deleteCommentById(UUID commentId) {
+        if (commentRepository.existsById(commentId)) {
+            commentRepository.deleteById(commentId);
             return;
         }
-        throw new CommentNotFoundException("Can't find comment with id: " + id);
+        throw new CommentNotFoundException("Can't find comment with id: " + commentId);
     }
 
 }

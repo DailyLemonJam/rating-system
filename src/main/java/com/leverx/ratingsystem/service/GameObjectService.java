@@ -9,23 +9,19 @@ import com.leverx.ratingsystem.mapper.GameObjectMapper;
 import com.leverx.ratingsystem.model.game.GameObject;
 import com.leverx.ratingsystem.repository.GameObjectRepository;
 import com.leverx.ratingsystem.repository.GameRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service
 public class GameObjectService {
 
     private final GameRepository gameRepository;
     private final GameObjectRepository gameObjectRepository;
     private final GameObjectMapper gameObjectMapper;
-
-    public GameObjectService(GameRepository gameRepository, GameObjectRepository gameObjectRepository, GameObjectMapper gameObjectMapper) {
-        this.gameRepository = gameRepository;
-        this.gameObjectRepository = gameObjectRepository;
-        this.gameObjectMapper = gameObjectMapper;
-    }
 
     public GameObjectDto getGameObjectById(UUID gameObjectId) {
         var gameObject = gameObjectRepository

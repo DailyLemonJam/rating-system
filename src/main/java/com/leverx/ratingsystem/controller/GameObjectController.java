@@ -5,21 +5,19 @@ import com.leverx.ratingsystem.dto.gameobject.GameObjectDto;
 import com.leverx.ratingsystem.dto.gameobject.UpdateGameObjectRequest;
 import com.leverx.ratingsystem.service.GameObjectService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/objects")
 public class GameObjectController {
 
     private final GameObjectService gameObjectService;
-
-    public GameObjectController(GameObjectService gameObjectService) {
-        this.gameObjectService = gameObjectService;
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<GameObjectDto> getGameObjectById(@PathVariable UUID id) {

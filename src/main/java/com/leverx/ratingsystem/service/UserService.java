@@ -4,6 +4,7 @@ import com.leverx.ratingsystem.dto.user.CreateUserRequest;
 import com.leverx.ratingsystem.model.user.User;
 import com.leverx.ratingsystem.repository.RoleRepository;
 import com.leverx.ratingsystem.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,16 +15,12 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 @Service
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
-
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-    }
 
     public Optional<User> findByName(String name) {
         return userRepository.findByName(name);

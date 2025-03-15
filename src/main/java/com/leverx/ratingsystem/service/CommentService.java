@@ -11,6 +11,7 @@ import com.leverx.ratingsystem.model.comment.Comment;
 import com.leverx.ratingsystem.model.comment.CommentStatus;
 import com.leverx.ratingsystem.repository.CommentRepository;
 import com.leverx.ratingsystem.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,18 +19,13 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service
 public class CommentService {
 
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
-
-    public CommentService(UserRepository userRepository, CommentRepository commentRepository, CommentMapper commentMapper) {
-        this.userRepository = userRepository;
-        this.commentRepository = commentRepository;
-        this.commentMapper = commentMapper;
-    }
 
     @Transactional(readOnly = true)
     public CommentDto getCommentById(UUID commentId) {

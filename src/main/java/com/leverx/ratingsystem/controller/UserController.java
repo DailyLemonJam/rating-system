@@ -4,6 +4,7 @@ import com.leverx.ratingsystem.dto.comment.CommentDto;
 import com.leverx.ratingsystem.dto.comment.CreateCommentRequest;
 import com.leverx.ratingsystem.service.CommentService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,15 +12,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/users")
 public class UserController {
 
     private final CommentService commentService;
-
-    public UserController(CommentService commentService) {
-        this.commentService = commentService;
-    }
 
     @PostMapping("/{id}/comments")
     public ResponseEntity<CommentDto> createComment(@PathVariable UUID id,

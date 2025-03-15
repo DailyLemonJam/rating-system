@@ -1,4 +1,7 @@
 package com.leverx.ratingsystem.dto.gameobject;
 
-public record UpdateGameObjectRequest() {
+import java.util.UUID;
+
+public record UpdateGameObjectRequest(String newTitle,
+                                      String newDescription) {
 }

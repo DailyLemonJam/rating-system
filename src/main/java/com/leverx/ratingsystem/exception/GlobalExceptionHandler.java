@@ -36,4 +36,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(GameObjectNotFoundException.class)
+    public ResponseEntity<ErrorDto> handleGameObjectNotFoundException(GameObjectNotFoundException e) {
+        return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(GameNotFoundException.class)
+    public ResponseEntity<ErrorDto> handleGameNotFoundException(GameNotFoundException e) {
+        return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
 }

@@ -2,12 +2,9 @@ package com.leverx.ratingsystem.service;
 
 import com.leverx.ratingsystem.dto.jwt.JwtRequest;
 import com.leverx.ratingsystem.dto.user.CreateUserRequest;
-import com.leverx.ratingsystem.dto.user.UserDto;
 import com.leverx.ratingsystem.exception.IncorrectUsernameOrPasswordException;
-import com.leverx.ratingsystem.exception.UserAlreadyExistsException;
-import com.leverx.ratingsystem.security.JwtTokenUtil;
+import com.leverx.ratingsystem.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

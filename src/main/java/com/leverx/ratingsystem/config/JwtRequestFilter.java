@@ -1,6 +1,6 @@
 package com.leverx.ratingsystem.config;
 
-import com.leverx.ratingsystem.security.JwtTokenUtil;
+import com.leverx.ratingsystem.util.JwtTokenUtil;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

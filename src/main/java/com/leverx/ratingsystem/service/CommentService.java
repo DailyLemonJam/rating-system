@@ -39,7 +39,7 @@ public class CommentService {
     @Transactional(readOnly = true)
     public List<CommentDto> getAllCommentsByUserId(UUID userId) {
         userRepository.findById(userId).
-                filter(user -> user.getRole() == RoleEnum.SELLER).
+                //filter(user -> user.getRole() == RoleEnum.SELLER).
                 orElseThrow(() -> new UserNotFoundException("Can't find user with id: " + userId));
         var approvedComments = commentRepository.findByUserIdAndStatus(userId, CommentStatus.APPROVED);
         var modifiedAndApprovedComments = commentRepository.findByUserIdAndStatus(userId, CommentStatus.MODIFIED_AND_APPROVED);
@@ -50,7 +50,7 @@ public class CommentService {
     @Transactional
     public CommentDto createComment(UUID userId, CreateCommentRequest createCommentRequest) {
         var seller = userRepository.findById(userId).
-                filter(user -> user.getRole() == RoleEnum.SELLER).
+                //filter(user -> user.getRole() == RoleEnum.SELLER).
                 orElseThrow(() -> new UserNotFoundException("Can't find user with id: " + userId));
         var comment = Comment.builder()
                 .user(seller)

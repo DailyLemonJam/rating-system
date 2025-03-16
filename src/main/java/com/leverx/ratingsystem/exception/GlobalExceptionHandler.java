@@ -46,4 +46,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<ErrorDto> handleUserAlreadyExistsException(UserAlreadyExistsException e) {
+        return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IncorrectUsernameOrPasswordException.class)
+    public ResponseEntity<ErrorDto> handleIncorrectUsernameOrPasswordException(IncorrectUsernameOrPasswordException e) {
+        return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
 }

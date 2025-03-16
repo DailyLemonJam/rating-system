@@ -1,9 +1,10 @@
 package com.leverx.ratingsystem.model.user;
 
-import com.leverx.ratingsystem.dto.comment.CommentDto;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import org.springframework.context.annotation.EnableMBeanExport;
+import lombok.NoArgsConstructor;
 
 import java.time.Instant;
 import java.util.Collection;
@@ -12,6 +13,9 @@ import java.util.UUID;
 @Entity
 @Data
 @Table(name = "users")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
 
     @Id

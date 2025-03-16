@@ -1,4 +1,8 @@
 package com.leverx.ratingsystem.dto.user;
 
-public class CreateUserRequest {
+import jakarta.validation.constraints.NotNull;
+
+public record CreateUserRequest(@NotNull String username,
+                                @NotNull String password,
+                                @NotNull String email) {
 }

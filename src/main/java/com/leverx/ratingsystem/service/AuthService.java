@@ -30,8 +30,11 @@ public class AuthService {
         return jwtTokenUtil.generateToken(userDetails);
     }
 
+    // TODO: mb remove this method?
     public void createNewUser(CreateUserRequest createUserRequest) {
         userService.createNewUser(createUserRequest);
     }
+
+    // TODO: reset password logic?
 
 }

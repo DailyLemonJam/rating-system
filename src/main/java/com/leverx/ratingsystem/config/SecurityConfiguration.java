@@ -2,6 +2,7 @@ package com.leverx.ratingsystem.config;
 
 import com.leverx.ratingsystem.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -20,11 +21,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableWebSecurity
 @Configuration
-@RequiredArgsConstructor
 @EnableMethodSecurity
 public class SecurityConfiguration {
-    private final UserService userService;
-    private final JwtRequestFilter jwtRequestFilter;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private JwtRequestFilter jwtRequestFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

@@ -3,7 +3,6 @@ package com.leverx.ratingsystem.service;
 import com.leverx.ratingsystem.dto.user.CreateUserRequest;
 import com.leverx.ratingsystem.exception.UserAlreadyExistsException;
 import com.leverx.ratingsystem.model.user.User;
-import com.leverx.ratingsystem.repository.RoleRepository;
 import com.leverx.ratingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

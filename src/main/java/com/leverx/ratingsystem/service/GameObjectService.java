@@ -9,9 +9,7 @@ import com.leverx.ratingsystem.exception.GameObjectNotFoundException;
 import com.leverx.ratingsystem.exception.UserNotFoundException;
 import com.leverx.ratingsystem.mapper.GameObjectMapper;
 import com.leverx.ratingsystem.model.game.GameObject;
-import com.leverx.ratingsystem.repository.CommentRepository;
 import com.leverx.ratingsystem.repository.GameObjectRepository;
-import com.leverx.ratingsystem.repository.GameRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -64,6 +65,7 @@ public class UserService implements UserDetailsService {
                 .email(createUserRequest.email())
                 .password(passwordEncoder.encode(createUserRequest.password()))
                 .roles(List.of(roleService.getUserRole()))
+                .createdAt(Instant.now())
                 .build();
         userRepository.save(user);
         // TODO: send email with confirmation code and add this code to redis

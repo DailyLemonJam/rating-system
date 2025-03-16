@@ -1,6 +1,8 @@
 package com.leverx.ratingsystem.service;
 
-import com.leverx.ratingsystem.dto.jwt.JwtRequest;
+import com.leverx.ratingsystem.dto.auth.AuthRequest;
+import com.leverx.ratingsystem.dto.auth.ForgotPasswordRequest;
+import com.leverx.ratingsystem.dto.auth.ResetPasswordRequest;
 import com.leverx.ratingsystem.dto.user.CreateUserRequest;
 import com.leverx.ratingsystem.exception.IncorrectUsernameOrPasswordException;
 import com.leverx.ratingsystem.util.JwtTokenUtil;
@@ -17,7 +19,7 @@ public class AuthService {
     private final JwtTokenUtil jwtTokenUtil;
     private final UserService userService;
 
-    public String createAuthToken(JwtRequest authRequest) {
+    public String createAuthToken(AuthRequest authRequest) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authRequest.username(), authRequest.password()));
@@ -35,6 +37,13 @@ public class AuthService {
         userService.createNewUser(createUserRequest);
     }
 
-    // TODO: reset password logic?
+    public void forgotPassword(ForgotPasswordRequest forgotPasswordRequest) {
+        // TODO: Send rest code to email if user exists
+        // Send code to Redis
+    }
+
+    public void resetPassword(ResetPasswordRequest resetPasswordRequest) {
+        // TODO: check verification code with code in Redis
+    }
 
 }

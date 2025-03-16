@@ -20,6 +20,7 @@ import java.util.UUID;
 public class UserController {
     private final CommentService commentService;
     private final GameObjectService gameObjectService;
+    // TODO: replace these services with UserService?
 
     @PostMapping("/{id}/comments")
     public ResponseEntity<CommentDto> createComment(@PathVariable UUID id,

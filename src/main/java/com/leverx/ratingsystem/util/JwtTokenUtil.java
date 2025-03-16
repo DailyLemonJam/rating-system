@@ -1,4 +1,4 @@
-package com.leverx.ratingsystem.security;
+package com.leverx.ratingsystem.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenUtil {
+    private final String tokenPayloadRolesName = "roles";
 
     @Value("${jwt.secret}")
     private String jwtSecret;
@@ -29,7 +30,7 @@ public class JwtTokenUtil {
         var roles = userDetails.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
-        claims.put("roles", roles);
+        claims.put(tokenPayloadRolesName, roles);
         var issued = new Date();
         var expired = new Date(issued.getTime() + jwtLifetime.toMillis());
         return Jwts.builder()
@@ -46,7 +47,7 @@ public class JwtTokenUtil {
     }
 
     public List<String> getRolesFromToken(String token) {
-        return getClaimsFromToken(token).get("roles", List.class);
+        return getClaimsFromToken(token).get(tokenPayloadRolesName, List.class);
     }
 
     private Claims getClaimsFromToken(String token) {

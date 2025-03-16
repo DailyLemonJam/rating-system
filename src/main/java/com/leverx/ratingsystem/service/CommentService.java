@@ -9,9 +9,9 @@ import com.leverx.ratingsystem.exception.UserNotFoundException;
 import com.leverx.ratingsystem.mapper.CommentMapper;
 import com.leverx.ratingsystem.model.comment.Comment;
 import com.leverx.ratingsystem.model.comment.CommentStatus;
-import com.leverx.ratingsystem.model.user.Role;
 import com.leverx.ratingsystem.repository.CommentRepository;
 import com.leverx.ratingsystem.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,18 +19,13 @@ import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service
 public class CommentService {
 
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final CommentMapper commentMapper;
-
-    public CommentService(UserRepository userRepository, CommentRepository commentRepository, CommentMapper commentMapper) {
-        this.userRepository = userRepository;
-        this.commentRepository = commentRepository;
-        this.commentMapper = commentMapper;
-    }
 
     @Transactional(readOnly = true)
     public CommentDto getCommentById(UUID commentId) {
@@ -44,7 +39,7 @@ public class CommentService {
     @Transactional(readOnly = true)
     public List<CommentDto> getAllCommentsByUserId(UUID userId) {
         userRepository.findById(userId).
-                filter(user -> user.getRole() == Role.SELLER).
+                //filter(user -> user.getRole() == RoleEnum.SELLER).
                 orElseThrow(() -> new UserNotFoundException("Can't find user with id: " + userId));
         var approvedComments = commentRepository.findByUserIdAndStatus(userId, CommentStatus.APPROVED);
         var modifiedAndApprovedComments = commentRepository.findByUserIdAndStatus(userId, CommentStatus.MODIFIED_AND_APPROVED);
@@ -55,7 +50,7 @@ public class CommentService {
     @Transactional
     public CommentDto createComment(UUID userId, CreateCommentRequest createCommentRequest) {
         var seller = userRepository.findById(userId).
-                filter(user -> user.getRole() == Role.SELLER).
+                //filter(user -> user.getRole() == RoleEnum.SELLER).
                 orElseThrow(() -> new UserNotFoundException("Can't find user with id: " + userId));
         var comment = Comment.builder()
                 .user(seller)

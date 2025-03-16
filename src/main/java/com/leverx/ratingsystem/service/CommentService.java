@@ -10,7 +10,6 @@ import com.leverx.ratingsystem.mapper.CommentMapper;
 import com.leverx.ratingsystem.model.comment.Comment;
 import com.leverx.ratingsystem.model.comment.CommentStatus;
 import com.leverx.ratingsystem.repository.CommentRepository;
-import com.leverx.ratingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +21,8 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Service
 public class CommentService {
-
-    private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final UserService userService;
     private final CommentMapper commentMapper;
 
     @Transactional(readOnly = true)
@@ -38,7 +36,7 @@ public class CommentService {
 
     @Transactional(readOnly = true)
     public List<CommentDto> getAllCommentsByUserId(UUID userId) {
-        userRepository.findById(userId).
+        userService.findById(userId).
                 //filter(user -> user.getRole() == RoleEnum.SELLER).
                 orElseThrow(() -> new UserNotFoundException("Can't find user with id: " + userId));
         var approvedComments = commentRepository.findByUserIdAndStatus(userId, CommentStatus.APPROVED);
@@ -49,7 +47,7 @@ public class CommentService {
 
     @Transactional
     public CommentDto createComment(UUID userId, CreateCommentRequest createCommentRequest) {
-        var seller = userRepository.findById(userId).
+        var seller = userService.findById(userId).
                 //filter(user -> user.getRole() == RoleEnum.SELLER).
                 orElseThrow(() -> new UserNotFoundException("Can't find user with id: " + userId));
         var comment = Comment.builder()

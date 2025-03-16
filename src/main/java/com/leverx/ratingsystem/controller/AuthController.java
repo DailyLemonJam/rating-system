@@ -1,7 +1,6 @@
 package com.leverx.ratingsystem.controller;
 
-import com.leverx.ratingsystem.dto.jwt.JwtRequest;
-import com.leverx.ratingsystem.dto.jwt.JwtResponse;
+import com.leverx.ratingsystem.dto.auth.*;
 import com.leverx.ratingsystem.dto.user.CreateUserRequest;
 import com.leverx.ratingsystem.dto.user.CreateUserResponse;
 import com.leverx.ratingsystem.service.AuthService;
@@ -21,9 +20,9 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<JwtResponse> createAuthToken(@Valid @RequestBody JwtRequest authRequest) {
+    public ResponseEntity<AuthResponse> createAuthToken(@Valid @RequestBody AuthRequest authRequest) {
         String token = authService.createAuthToken(authRequest);
-        return new ResponseEntity<>(new JwtResponse(token), HttpStatus.OK);
+        return new ResponseEntity<>(new AuthResponse(token), HttpStatus.OK);
     }
 
     @PostMapping("/register")
@@ -32,6 +31,16 @@ public class AuthController {
         return new ResponseEntity<>(new CreateUserResponse("Confirmation code was sent to your email address"), HttpStatus.OK);
     }
 
-    // TODO: reset password feature
+    @PostMapping("/forgot_password")
+    public ResponseEntity<ForgotPasswordResponse> forgotPassword(@Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest) {
+        authService.forgotPassword(forgotPasswordRequest);
+        return new ResponseEntity<>(new ForgotPasswordResponse("Reset code was sent to your email"), HttpStatus.OK);
+    }
+
+    @PostMapping("/reset_password")
+    public ResponseEntity<ResetPasswordResponse> resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
+        authService.resetPassword(resetPasswordRequest);
+        return new ResponseEntity<>(new ResetPasswordResponse("Password was successfully changed"), HttpStatus.OK);
+    }
 
 }

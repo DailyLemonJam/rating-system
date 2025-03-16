@@ -1,6 +1,8 @@
 package com.leverx.ratingsystem.service;
 
-import com.leverx.ratingsystem.dto.jwt.JwtRequest;
+import com.leverx.ratingsystem.dto.auth.AuthRequest;
+import com.leverx.ratingsystem.dto.auth.ForgotPasswordRequest;
+import com.leverx.ratingsystem.dto.auth.ResetPasswordRequest;
 import com.leverx.ratingsystem.dto.user.CreateUserRequest;
 import com.leverx.ratingsystem.exception.IncorrectUsernameOrPasswordException;
 import com.leverx.ratingsystem.util.JwtTokenUtil;
@@ -13,12 +15,11 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
     private final UserService userService;
 
-    public String createAuthToken(JwtRequest authRequest) {
+    public String createAuthToken(AuthRequest authRequest) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authRequest.username(), authRequest.password()));
@@ -31,8 +32,18 @@ public class AuthService {
         return jwtTokenUtil.generateToken(userDetails);
     }
 
+    // TODO: mb remove this method?
     public void createNewUser(CreateUserRequest createUserRequest) {
         userService.createNewUser(createUserRequest);
+    }
+
+    public void forgotPassword(ForgotPasswordRequest forgotPasswordRequest) {
+        // TODO: Send rest code to email if user exists
+        // Send code to Redis
+    }
+
+    public void resetPassword(ResetPasswordRequest resetPasswordRequest) {
+        // TODO: check verification code with code in Redis
     }
 
 }

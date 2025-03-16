@@ -16,7 +16,6 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/objects")
 public class GameObjectController {
-
     private final GameObjectService gameObjectService;
 
     @GetMapping("/{id}")

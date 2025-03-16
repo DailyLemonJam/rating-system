@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 @Component
 @RequiredArgsConstructor
 public class JwtRequestFilter extends OncePerRequestFilter {
-
     private final JwtTokenUtil jwtTokenUtil;
 
     @Override

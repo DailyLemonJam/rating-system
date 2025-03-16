@@ -16,15 +16,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 public class UserService implements UserDetailsService {
-
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
+
+    public Optional<User> findById(UUID id) {
+        return userRepository.findById(id);
+    }
 
     public Optional<User> findByUsername(String name) {
         return userRepository.findByName(name);

@@ -10,7 +10,6 @@ import com.leverx.ratingsystem.mapper.CommentMapper;
 import com.leverx.ratingsystem.model.comment.Comment;
 import com.leverx.ratingsystem.model.comment.CommentStatus;
 import com.leverx.ratingsystem.repository.CommentRepository;
-import com.leverx.ratingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -29,14 +29,10 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void initGames() {
-        var cs2 = Game.builder().name("CS2").build();
-        var dota = Game.builder().name("Dota").build();
-        var fifa = Game.builder().name("FIFA").build();
-        var teamFortress = Game.builder().name("Team Fortress").build();
-        gameRepository.save(cs2);
-        gameRepository.save(dota);
-        gameRepository.save(fifa);
-        gameRepository.save(teamFortress);
+        for (var available_game : AppConfiguration.AVAILABLE_GAMES) {
+            var game = Game.builder().name(available_game).build();
+            gameRepository.save(game);
+        }
     }
 
 }

@@ -21,6 +21,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ErrorDto("Invalid request data"), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorDto> handleMethodArgumentNotValidException(Exception e) {
+        return new ResponseEntity<>(new ErrorDto("Oopsie, something went wrong"), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(CommentNotFoundException.class)
     public ResponseEntity<ErrorDto> handleCommentNotFoundException(CommentNotFoundException e) {
         return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.NOT_FOUND);

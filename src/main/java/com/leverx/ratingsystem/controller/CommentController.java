@@ -1,6 +1,7 @@
 package com.leverx.ratingsystem.controller;
 
 import com.leverx.ratingsystem.dto.comment.CommentDto;
+import com.leverx.ratingsystem.dto.comment.CreateCommentWithSellerRequest;
 import com.leverx.ratingsystem.dto.comment.UpdateCommentRequest;
 import com.leverx.ratingsystem.service.CommentService;
 import jakarta.validation.Valid;
@@ -21,6 +22,12 @@ public class CommentController {
     public ResponseEntity<CommentDto> getCommentById(@PathVariable UUID id) {
         var commentDto = commentService.getCommentById(id);
         return new ResponseEntity<>(commentDto, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<CommentDto> createCommentWithSeller(@RequestBody @Valid CreateCommentWithSellerRequest request) {
+        var commentDto = commentService.createCommentWithSeller(request);
+        return new ResponseEntity<>(commentDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

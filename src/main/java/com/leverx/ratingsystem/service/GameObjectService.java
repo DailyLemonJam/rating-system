@@ -8,6 +8,7 @@ import com.leverx.ratingsystem.exception.GameObjectNotFoundException;
 import com.leverx.ratingsystem.mapper.ModelDtoMapper;
 import com.leverx.ratingsystem.model.game.GameObject;
 import com.leverx.ratingsystem.repository.GameObjectRepository;
+import com.leverx.ratingsystem.repository.GameRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,8 @@ import java.util.UUID;
 @Service
 public class GameObjectService {
     private final GameObjectRepository gameObjectRepository;
-    private final GameService gameService;
     private final ModelDtoMapper<GameObjectDto, GameObject> gameObjectMapper;
+    private final GameRepository gameRepository;
 
     public GameObjectDto getGameObjectById(UUID gameObjectId) {
         var gameObject = gameObjectRepository.findById(gameObjectId)
@@ -28,7 +29,7 @@ public class GameObjectService {
     }
 
     public GameObjectDto createGameObject(CreateGameObjectRequest createGameObjectRequest) {
-        var game = gameService.findById(createGameObjectRequest.gameId())
+        var game = gameRepository.findById(createGameObjectRequest.gameId())
                 .orElseThrow(() -> new GameNotFoundException("Can't find game"));
         var instantNow = Instant.now();
         var gameObject = GameObject.builder()

@@ -66,4 +66,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(IncorrectResetPasswordRequestException.class)
+    public ResponseEntity<ErrorDto> handleIncorrectResetPasswordRequestException(IncorrectResetPasswordRequestException e) {
+        return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
 }

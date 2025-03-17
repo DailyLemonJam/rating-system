@@ -29,6 +29,7 @@ public class AuthService {
     private final UserService userService;
     private final ConfirmationCodeGenerator confirmationCodeGenerator;
     private final ConfirmationCodeService confirmationCodeService;
+    private final EmailService emailService;
 
     @Transactional
     public String createAuthToken(AuthRequest authRequest) {
@@ -57,15 +58,21 @@ public class AuthService {
     @Transactional
     public void createNewUser(CreateUserRequest createUserRequest) {
         userService.createNewUser(createUserRequest);
+        String requestEmail = createUserRequest.email();
         String confirmationCode = confirmationCodeGenerator.generateConfirmationCode();
-        confirmationCodeService.save(confirmationCode, createUserRequest.email());
-        // TODO: Send code to provided email
+        confirmationCodeService.save(confirmationCode, requestEmail);
+        emailService.sendConfirmationCode(requestEmail,
+                "Complete registration",
+                confirmationCode);
     }
 
     @Transactional
     public void verifyUserEmail(VerifyUserEmailRequest verifyUserEmailRequest) {
-        userService.findByEmail(verifyUserEmailRequest.email())
+        var user = userService.findByEmail(verifyUserEmailRequest.email())
                 .orElseThrow(() -> new UsernameNotFoundException("Can't find user"));
+        if (user.getEmailStatus() == UserEmailStatus.VERIFIED) {
+            throw new IncorrectVerifyUserEmailRequestException("This email is already verified");
+        }
         String requestCode = verifyUserEmailRequest.confirmationCode();
         if (!confirmationCodeService.exists(requestCode)) {
             throw new IncorrectVerifyUserEmailRequestException("Incorrect email or confirmation code");
@@ -75,6 +82,7 @@ public class AuthService {
         if (!value.equals(requestEmail)) {
             throw new IncorrectVerifyUserEmailRequestException("Incorrect email or confirmation code");
         }
+        confirmationCodeService.delete(requestCode);
         userService.verifyUserEmail(verifyUserEmailRequest);
     }
 
@@ -83,8 +91,11 @@ public class AuthService {
         userService.findByEmail(forgotPasswordRequest.email())
                 .orElseThrow(() -> new UsernameNotFoundException("User with this email doesn't exist"));
         String confirmationCode = confirmationCodeGenerator.generateConfirmationCode();
-        confirmationCodeService.save(confirmationCode, forgotPasswordRequest.email());
-        // TODO: Send code to provided email
+        String requestEmail = forgotPasswordRequest.email();
+        confirmationCodeService.save(confirmationCode, requestEmail);
+        emailService.sendConfirmationCode(requestEmail,
+                "Reset password",
+                confirmationCode);
     }
 
     @Transactional

@@ -1,6 +1,8 @@
 package com.leverx.ratingsystem.dto.gameobject;
 
-public record CreateGameObjectRequest(String title,
-                                      String description,
-                                      Integer gameId) {
+import jakarta.validation.constraints.NotNull;
+
+public record CreateGameObjectRequest(@NotNull String title,
+                                      @NotNull String description,
+                                      @NotNull Integer gameId) {
 }

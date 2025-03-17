@@ -1,11 +1,13 @@
 package com.leverx.ratingsystem.dto.gameobject;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.time.Instant;
 import java.util.UUID;
 
-public record GameObjectDto(String title,
-                            String description,
-                            Instant createdAt,
-                            Instant updatedAt,
-                            UUID userId) {
+public record GameObjectDto(@NotNull String title,
+                            @NotNull String description,
+                            @NotNull Instant createdAt,
+                            @NotNull Instant updatedAt,
+                            @NotNull UUID userId) {
 }

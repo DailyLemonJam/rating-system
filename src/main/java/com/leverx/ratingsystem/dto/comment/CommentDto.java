@@ -9,8 +9,8 @@ import java.time.Instant;
 import java.util.UUID;
 
 public record CommentDto(@NotNull String message,
-                         @Min(AppConfiguration.MIN_GRADE)
-                         @Max(AppConfiguration.MAX_GRADE) int grade,
-                         Instant createdAt,
-                         UUID sellerId) {
+                         @NotNull @Min(AppConfiguration.MIN_GRADE)
+                         @NotNull @Max(AppConfiguration.MAX_GRADE) Integer grade,
+                         @NotNull Instant createdAt,
+                         @NotNull UUID sellerId) {
 }

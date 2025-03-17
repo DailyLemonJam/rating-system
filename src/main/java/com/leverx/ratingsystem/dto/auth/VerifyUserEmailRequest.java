@@ -1,4 +1,8 @@
 package com.leverx.ratingsystem.dto.auth;
 
-public record VerifyUserEmailRequest(String email, String confirmationCode) {
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+
+public record VerifyUserEmailRequest(@NotNull @Email String email,
+                                     @NotNull String confirmationCode) {
 }

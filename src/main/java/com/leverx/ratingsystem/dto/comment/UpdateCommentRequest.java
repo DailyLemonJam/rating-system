@@ -6,6 +6,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 public record UpdateCommentRequest(@NotNull String newMessage,
-                                   @Min(AppConfiguration.MIN_GRADE)
-                                   @Max(AppConfiguration.MAX_GRADE) int newGrade) {
+                                   @NotNull @Min(AppConfiguration.MIN_GRADE)
+                                   @NotNull @Max(AppConfiguration.MAX_GRADE) Integer newGrade) {
 }

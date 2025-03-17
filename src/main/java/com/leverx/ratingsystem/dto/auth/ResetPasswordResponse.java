@@ -1,4 +1,6 @@
 package com.leverx.ratingsystem.dto.auth;
 
-public record ResetPasswordResponse(String message) {
+import jakarta.validation.constraints.NotNull;
+
+public record ResetPasswordResponse(@NotNull String message) {
 }

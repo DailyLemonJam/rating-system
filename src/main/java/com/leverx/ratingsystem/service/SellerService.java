@@ -45,8 +45,8 @@ public class SellerService {
                 .status(CommentStatus.PENDING)
                 .editCount(0)
                 .build();
-        var newComment = commentRepository.save(comment);
-        return commentMapper.toDto(newComment);
+        commentRepository.save(comment);
+        return commentMapper.toDto(comment);
     }
 
     @Transactional(readOnly = true)

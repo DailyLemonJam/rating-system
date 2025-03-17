@@ -31,6 +31,12 @@ public class AuthController {
         return new ResponseEntity<>(new CreateUserResponse("Confirmation code was sent to your email address"), HttpStatus.OK);
     }
 
+    @PostMapping("/verify")
+    public ResponseEntity<VerifyUserEmailResponse> verifyNewUserEmail(@Valid @RequestBody VerifyUserEmailRequest verifyUserEmailRequest) {
+        authService.verifyUserEmail(verifyUserEmailRequest);
+        return new ResponseEntity<>(new VerifyUserEmailResponse("Your email was successfully verified"), HttpStatus.OK);
+    }
+
     @PostMapping("/forgot_password")
     public ResponseEntity<ForgotPasswordResponse> forgotPassword(@Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest) {
         authService.forgotPassword(forgotPasswordRequest);

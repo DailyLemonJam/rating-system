@@ -56,4 +56,14 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(UserNotAllowedToLoginException.class)
+    public ResponseEntity<ErrorDto> handleUserNotAllowedToLoginException(UserNotAllowedToLoginException e) {
+        return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.FORBIDDEN);
+    }
+
+    @ExceptionHandler(IncorrectVerifyUserEmailRequestException.class)
+    public ResponseEntity<ErrorDto> handleIncorrectVerifyUserEmailRequestException(IncorrectVerifyUserEmailRequestException e) {
+        return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
 }

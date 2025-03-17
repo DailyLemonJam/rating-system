@@ -1,8 +1,12 @@
 package com.leverx.ratingsystem.service;
 
+import com.leverx.ratingsystem.dto.auth.ResetPasswordRequest;
+import com.leverx.ratingsystem.dto.auth.VerifyUserEmailRequest;
 import com.leverx.ratingsystem.dto.user.CreateUserRequest;
 import com.leverx.ratingsystem.exception.UserAlreadyExistsException;
 import com.leverx.ratingsystem.model.user.User;
+import com.leverx.ratingsystem.model.user.UserEmailStatus;
+import com.leverx.ratingsystem.model.user.UserStatus;
 import com.leverx.ratingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -62,12 +66,29 @@ public class UserService implements UserDetailsService {
         var user = User.builder()
                 .name(createUserRequest.username())
                 .email(createUserRequest.email())
+                .status(UserStatus.PENDING)
+                .emailStatus(UserEmailStatus.PENDING)
                 .password(passwordEncoder.encode(createUserRequest.password()))
                 .roles(List.of(roleService.getUserRole()))
                 .createdAt(Instant.now())
                 .build();
         userRepository.save(user);
-        // TODO: send email with confirmation code and add this code to redis
+    }
+
+    @Transactional
+    public void resetUserPassword(ResetPasswordRequest resetPasswordRequest) {
+        var user = findByEmail(resetPasswordRequest.email())
+                .orElseThrow(() -> new UsernameNotFoundException("Can't find user")); // just in case
+        user.setPassword(passwordEncoder.encode(resetPasswordRequest.newPassword()));
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public void verifyUserEmail(VerifyUserEmailRequest verifyUserEmailRequest) {
+        var user = findByEmail(verifyUserEmailRequest.email())
+                .orElseThrow(() -> new UsernameNotFoundException("Can't find user")); // just in case
+        user.setEmailStatus(UserEmailStatus.VERIFIED);
+        userRepository.save(user);
     }
 
 }

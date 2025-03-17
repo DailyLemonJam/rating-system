@@ -3,21 +3,18 @@ package com.leverx.ratingsystem.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 @Configuration
 public class RedisConfiguration {
 
     @Bean
-    public JedisConnectionFactory redisConnectionFactory() {
-        return new JedisConnectionFactory();
-    }
-
-    @Bean
-    public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory redisConnectionFactory) {
-        var template = new RedisTemplate<String, Object>();
-        template.setConnectionFactory(redisConnectionFactory);
+    public RedisTemplate<String, String> redisTemplate(RedisConnectionFactory factory) {
+        var template = new RedisTemplate<String, String>();
+        template.setConnectionFactory(factory);
+        template.setKeySerializer(new StringRedisSerializer());
+        template.setValueSerializer(new StringRedisSerializer());
         return template;
     }
 

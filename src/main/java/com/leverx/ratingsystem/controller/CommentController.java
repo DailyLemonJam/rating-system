@@ -23,12 +23,6 @@ public class CommentController {
         return new ResponseEntity<>(commentDto, HttpStatus.OK);
     }
 
-    // IMPORTANT: all comments are left by truly anonymous users (it basically means we don't know anything about them).
-    // So the only way to be able for these users to delete/modify their comments - provide some kind of UUID of the comment
-    // as response when it was created. Comment can be modified only once (protection against abusing via comment modification).
-    // This is not 100% reliable system, that would be better to have users account after all.
-    // But as already said - anonymous users should be truly anonymous.
-
     @PutMapping("/{id}")
     public ResponseEntity<CommentDto> updateCommentById(@PathVariable UUID id,
                                                         @Valid @RequestBody UpdateCommentRequest updateCommentRequest) {

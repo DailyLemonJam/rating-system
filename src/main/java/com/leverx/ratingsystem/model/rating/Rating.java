@@ -26,6 +26,6 @@ public class Rating {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private double totalRating;
+    private double averageRating;
 
 }

@@ -76,4 +76,9 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(UserRatingNotFoundException.class)
+    public ResponseEntity<ErrorDto> handleUserRatingNotFoundException(UserRatingNotFoundException e) {
+        return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
 }

@@ -4,7 +4,7 @@ import com.leverx.ratingsystem.dto.auth.AuthRequest;
 import com.leverx.ratingsystem.dto.auth.ForgotPasswordRequest;
 import com.leverx.ratingsystem.dto.auth.ResetPasswordRequest;
 import com.leverx.ratingsystem.dto.auth.VerifyUserEmailRequest;
-import com.leverx.ratingsystem.dto.user.CreateUserRequest;
+import com.leverx.ratingsystem.dto.auth.CreateUserRequest;
 import com.leverx.ratingsystem.exception.IncorrectResetPasswordRequestException;
 import com.leverx.ratingsystem.exception.IncorrectUsernameOrPasswordException;
 import com.leverx.ratingsystem.exception.IncorrectVerifyUserEmailRequestException;

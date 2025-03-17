@@ -41,4 +41,6 @@ public class Comment {
 
     private CommentStatus status;
 
+    private Integer editCount;
+
 }

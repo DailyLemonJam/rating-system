@@ -2,8 +2,11 @@ package com.leverx.ratingsystem.service;
 
 import com.leverx.ratingsystem.dto.auth.ResetPasswordRequest;
 import com.leverx.ratingsystem.dto.auth.VerifyUserEmailRequest;
-import com.leverx.ratingsystem.dto.user.CreateUserRequest;
+import com.leverx.ratingsystem.dto.auth.CreateUserRequest;
+import com.leverx.ratingsystem.dto.user.AdminUserDto;
 import com.leverx.ratingsystem.exception.UserAlreadyExistsException;
+import com.leverx.ratingsystem.exception.UserNotFoundException;
+import com.leverx.ratingsystem.mapper.ModelDtoMapper;
 import com.leverx.ratingsystem.model.user.User;
 import com.leverx.ratingsystem.model.user.UserEmailStatus;
 import com.leverx.ratingsystem.model.user.UserStatus;
@@ -29,6 +32,7 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
+    private final ModelDtoMapper<AdminUserDto, User> adminMapper;
 
     public Optional<User> findById(UUID id) {
         return userRepository.findById(id);
@@ -78,7 +82,7 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void resetUserPassword(ResetPasswordRequest resetPasswordRequest) {
         var user = findByEmail(resetPasswordRequest.email())
-                .orElseThrow(() -> new UsernameNotFoundException("Can't find user")); // just in case
+                .orElseThrow(() -> new UserNotFoundException("Can't find user"));
         user.setPassword(passwordEncoder.encode(resetPasswordRequest.newPassword()));
         userRepository.save(user);
     }
@@ -86,9 +90,23 @@ public class UserService implements UserDetailsService {
     @Transactional
     public void verifyUserEmail(VerifyUserEmailRequest verifyUserEmailRequest) {
         var user = findByEmail(verifyUserEmailRequest.email())
-                .orElseThrow(() -> new UsernameNotFoundException("Can't find user")); // just in case
+                .orElseThrow(() -> new UserNotFoundException("Can't find user"));
         user.setEmailStatus(UserEmailStatus.VERIFIED);
         userRepository.save(user);
+    }
+
+    @Transactional
+    public void changeUserStatus(UUID userId, UserStatus newUserStatus) {
+        var user = userRepository.findById(userId)
+                .orElseThrow(() -> new UserNotFoundException("Can't find user"));
+        user.setStatus(newUserStatus);
+        userRepository.save(user);
+    }
+
+    @Transactional
+    public List<AdminUserDto> getUsersWithStatus(UserStatus userStatus) {
+        var pendingUsers = userRepository.findAllByStatus(userStatus);
+        return adminMapper.toDto(pendingUsers);
     }
 
 }

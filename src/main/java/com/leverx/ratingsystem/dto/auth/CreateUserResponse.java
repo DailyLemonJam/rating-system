@@ -1,4 +1,4 @@
-package com.leverx.ratingsystem.dto.user;
+package com.leverx.ratingsystem.dto.auth;
 
 import jakarta.validation.constraints.NotBlank;
 

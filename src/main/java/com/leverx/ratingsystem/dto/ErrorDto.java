@@ -1,6 +1,6 @@
 package com.leverx.ratingsystem.dto;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
-public record ErrorDto(@NotNull String message) {
+public record ErrorDto(@NotBlank String message) {
 }

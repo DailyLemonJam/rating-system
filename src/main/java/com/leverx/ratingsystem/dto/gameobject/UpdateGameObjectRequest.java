@@ -1,7 +1,7 @@
 package com.leverx.ratingsystem.dto.gameobject;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
-public record UpdateGameObjectRequest(@NotNull String newTitle,
-                                      @NotNull String newDescription) {
+public record UpdateGameObjectRequest(@NotBlank String newTitle,
+                                      @NotBlank String newDescription) {
 }

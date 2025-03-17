@@ -1,7 +1,7 @@
 package com.leverx.ratingsystem.dto.user;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
-public record UserDto(@NotNull String username,
-                      @NotNull String email) {
+public record UserDto(@NotBlank String username,
+                      @NotBlank String email) {
 }

@@ -1,6 +1,6 @@
 package com.leverx.ratingsystem.dto.auth;
 
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 
-public record ForgotPasswordResponse(@NotNull String message) {
+public record ForgotPasswordResponse(@NotBlank String message) {
 }

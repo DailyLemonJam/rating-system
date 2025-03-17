@@ -10,5 +10,6 @@ import java.util.UUID;
 
 @Repository
 public interface GameObjectRepository extends JpaRepository<GameObject, UUID> {
-    List<GameObject> findByUser(User user);
+    List<GameObject> findAllByUser(User user);
+    List<GameObject> findAllByUser_Id(UUID userId);
 }

@@ -1,8 +1,8 @@
 package com.leverx.ratingsystem.controller;
 
 import com.leverx.ratingsystem.dto.auth.*;
-import com.leverx.ratingsystem.dto.user.CreateUserRequest;
-import com.leverx.ratingsystem.dto.user.CreateUserResponse;
+import com.leverx.ratingsystem.dto.auth.CreateUserRequest;
+import com.leverx.ratingsystem.dto.auth.CreateUserResponse;
 import com.leverx.ratingsystem.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -37,13 +37,13 @@ public class AuthController {
         return new ResponseEntity<>(new VerifyUserEmailResponse("Your email was successfully verified"), HttpStatus.OK);
     }
 
-    @PostMapping("/forgot_password")
+    @PostMapping("/forgot-password")
     public ResponseEntity<ForgotPasswordResponse> forgotPassword(@Valid @RequestBody ForgotPasswordRequest forgotPasswordRequest) {
         authService.forgotPassword(forgotPasswordRequest);
         return new ResponseEntity<>(new ForgotPasswordResponse("Reset code was sent to your email"), HttpStatus.OK);
     }
 
-    @PostMapping("/reset_password")
+    @PostMapping("/reset-password")
     public ResponseEntity<ResetPasswordResponse> resetPassword(@Valid @RequestBody ResetPasswordRequest resetPasswordRequest) {
         authService.resetPassword(resetPasswordRequest);
         return new ResponseEntity<>(new ResetPasswordResponse("Password was successfully changed"), HttpStatus.OK);

@@ -1,4 +1,7 @@
 package com.leverx.ratingsystem.dto.auth;
 
-public record ForgotPasswordRequest(String email) {
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
+public record ForgotPasswordRequest(@NotBlank @Email String email) {
 }

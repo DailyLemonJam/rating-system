@@ -1,4 +1,6 @@
 package com.leverx.ratingsystem.dto.auth;
 
-public record VerifyUserEmailResponse(String message) {
+import jakarta.validation.constraints.NotBlank;
+
+public record VerifyUserEmailResponse(@NotBlank String message) {
 }

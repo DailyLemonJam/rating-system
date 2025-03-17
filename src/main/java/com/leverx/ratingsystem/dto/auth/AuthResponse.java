@@ -1,4 +1,6 @@
 package com.leverx.ratingsystem.dto.auth;
 
-public record AuthResponse(String token) {
+import jakarta.validation.constraints.NotBlank;
+
+public record AuthResponse(@NotBlank String token) {
 }

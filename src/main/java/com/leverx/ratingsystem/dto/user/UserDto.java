@@ -1,4 +1,7 @@
 package com.leverx.ratingsystem.dto.user;
 
-public record UserDto(String username, String email) {
+import jakarta.validation.constraints.NotBlank;
+
+public record UserDto(@NotBlank String username,
+                      @NotBlank String email) {
 }

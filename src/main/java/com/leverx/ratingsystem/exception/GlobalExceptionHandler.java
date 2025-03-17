@@ -21,6 +21,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ErrorDto("Invalid request data"), HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorDto> handleMethodArgumentNotValidException(Exception e) {
+        return new ResponseEntity<>(new ErrorDto("Oopsie, something went wrong"), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(CommentNotFoundException.class)
     public ResponseEntity<ErrorDto> handleCommentNotFoundException(CommentNotFoundException e) {
         return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.NOT_FOUND);
@@ -63,6 +68,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IncorrectVerifyUserEmailRequestException.class)
     public ResponseEntity<ErrorDto> handleIncorrectVerifyUserEmailRequestException(IncorrectVerifyUserEmailRequestException e) {
+        return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(IncorrectResetPasswordRequestException.class)
+    public ResponseEntity<ErrorDto> handleIncorrectResetPasswordRequestException(IncorrectResetPasswordRequestException e) {
         return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.BAD_REQUEST);
     }
 

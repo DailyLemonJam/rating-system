@@ -38,7 +38,7 @@ public class CommentService {
     @Transactional(readOnly = true)
     public CommentDto getCommentById(UUID commentId) {
         var comment = commentRepository.findByIdAndStatus(commentId, CommentStatus.APPROVED)
-                .orElseThrow(() -> new CommentNotFoundException("Can't find comment with id: " + commentId));
+                .orElseThrow(() -> new CommentNotFoundException("Comment doesn't exist or wasn't approved"));
         return commentMapper.toDto(comment);
     }
 

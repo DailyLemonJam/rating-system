@@ -24,7 +24,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class SellerService {
+public class SellerProfileService {
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
     private final GameObjectRepository gameObjectRepository;

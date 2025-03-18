@@ -33,10 +33,10 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/admin/**").hasRole(AppConfiguration.ROLE_ADMIN);
-                    auth.requestMatchers(HttpMethod.POST, "/objects/**").hasRole(AppConfiguration.ROLE_SELLER);
-                    auth.requestMatchers(HttpMethod.PUT, "/objects/**").hasRole(AppConfiguration.ROLE_SELLER);
-                    auth.requestMatchers(HttpMethod.DELETE, "/objects/**").hasRole(AppConfiguration.ROLE_SELLER);
+                    auth.requestMatchers("/admin/**").hasRole(AppConfiguration.ROLE_ADMIN_NO_PREFIX);
+                    auth.requestMatchers(HttpMethod.POST, "/objects/**").hasRole(AppConfiguration.ROLE_SELLER_NO_PREFIX);
+                    auth.requestMatchers(HttpMethod.PUT, "/objects/**").hasRole(AppConfiguration.ROLE_SELLER_NO_PREFIX);
+                    auth.requestMatchers(HttpMethod.DELETE, "/objects/**").hasRole(AppConfiguration.ROLE_SELLER_NO_PREFIX);
                     auth.anyRequest().permitAll();
                 })
                 .sessionManagement(configurer ->

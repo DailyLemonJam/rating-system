@@ -33,7 +33,6 @@ public class SellerController {
         return new ResponseEntity<>(topRatings, HttpStatus.OK);
     }
 
-
     @PostMapping("/{id}/comments")
     public ResponseEntity<CommentDto> createCommentToSeller(@PathVariable UUID id,
                                                             @Valid @RequestBody CreateCommentRequest createCommentRequest) {

@@ -23,7 +23,7 @@ public class DataLoader implements CommandLineRunner {
 
     private void initRoles() {
         var adminRole = Role.builder().name(AppConfiguration.ROLE_ADMIN).build();
-        var userRole = Role.builder().name(AppConfiguration.ROLE_USER).build();
+        var userRole = Role.builder().name(AppConfiguration.ROLE_SELLER).build();
         roleRepository.save(adminRole);
         roleRepository.save(userRole);
     }

@@ -12,7 +12,7 @@ public class RoleService {
     private final RoleRepository roleRepository;
 
     public Role getUserRole() {
-        return roleRepository.findByName(AppConfiguration.ROLE_USER);
+        return roleRepository.findByName(AppConfiguration.ROLE_SELLER);
     }
 
     public Role getAdminRole() {

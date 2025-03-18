@@ -1,5 +1,6 @@
 package com.leverx.ratingsystem.service;
 
+import com.leverx.ratingsystem.config.AppConfiguration;
 import com.leverx.ratingsystem.dto.comment.*;
 import com.leverx.ratingsystem.exception.CommentNotFoundException;
 import com.leverx.ratingsystem.exception.IncorrectCommentPasswordException;
@@ -52,6 +53,10 @@ public class CommentService {
     public CommentDto createCommentOnSellerProfile(UUID userId, CreateCommentRequest createCommentRequest) {
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
+        if (user.getRoles().stream()
+                .anyMatch(role -> role.getName().equals(AppConfiguration.ROLE_ADMIN))) {
+            throw new UserNotFoundException("User not found");
+        }
         if (user.getStatus() != UserStatus.APPROVED) {
             throw new UserNotFoundException("User not found");
         }
@@ -110,6 +115,7 @@ public class CommentService {
         comment.setStatus(CommentStatus.PENDING);
         comment.setEditCount(comment.getEditCount() + 1);
         commentRepository.save(comment);
+        ratingService.updateUserRatingByUserId(comment.getUser().getId());
         return commentMapper.toDto(comment);
     }
 

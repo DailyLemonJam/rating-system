@@ -102,7 +102,7 @@ public class CommentService {
     public CommentDto updateCommentById(UUID commentId, UpdateCommentRequest request) {
         var comment = commentRepository.findById(commentId).
                 orElseThrow(() -> new CommentNotFoundException("Can't find comment with id: " + commentId));
-        if (!comment.getEncryptedPassword().equals(passwordEncoder.encode(request.password()))) {
+        if (!passwordEncoder.matches(request.password(), comment.getEncryptedPassword())) {
             throw new IncorrectCommentPasswordException("Incorrect password");
         }
         comment.setMessage(request.newMessage());
@@ -117,7 +117,7 @@ public class CommentService {
     public void deleteCommentById(UUID commentId, DeleteCommentRequest request) {
         var comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CommentNotFoundException("Can't find comment"));
-        if (!comment.getEncryptedPassword().equals(passwordEncoder.encode(request.password()))) {
+        if (!passwordEncoder.matches(request.password(), comment.getEncryptedPassword())) {
             throw new IncorrectCommentPasswordException("Incorrect password");
         }
         var userId = comment.getUser().getId();

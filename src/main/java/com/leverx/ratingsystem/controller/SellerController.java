@@ -1,6 +1,7 @@
 package com.leverx.ratingsystem.controller;
 
 import com.leverx.ratingsystem.dto.RatingDto;
+import com.leverx.ratingsystem.dto.TopSellersArgsRequest;
 import com.leverx.ratingsystem.dto.comment.CommentDto;
 import com.leverx.ratingsystem.dto.comment.CreateCommentRequest;
 import com.leverx.ratingsystem.dto.gameobject.GameObjectDto;
@@ -16,9 +17,22 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/seller")
+@RequestMapping("/sellers")
 public class SellerController {
     private final SellerService sellerService;
+
+    @GetMapping("/top")
+    public ResponseEntity<List<RatingDto>> getTopRatingSellers(@Valid @RequestBody TopSellersArgsRequest request) {
+        var topRatings = sellerService.getTopRatingsSellers(request);
+        return new ResponseEntity<>(topRatings, HttpStatus.OK);
+    }
+
+    @GetMapping("/game/{id}")
+    public ResponseEntity<List<RatingDto>> getSellerRatingsWithObjectsFromGame(@PathVariable Integer id) {
+        var topRatings = sellerService.getSellerRatingsWithObjectsFromGame(id);
+        return new ResponseEntity<>(topRatings, HttpStatus.OK);
+    }
+
 
     @PostMapping("/{id}/comments")
     public ResponseEntity<CommentDto> createCommentToSeller(@PathVariable UUID id,

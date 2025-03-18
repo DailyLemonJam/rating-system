@@ -14,6 +14,7 @@ import com.leverx.ratingsystem.repository.GameRepository;
 import com.leverx.ratingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.Principal;
 import java.time.Instant;
@@ -28,6 +29,7 @@ public class GameObjectService {
     private final GameRepository gameRepository;
     private final UserRepository userRepository;
 
+    @Transactional(readOnly = true)
     public List<GameObjectDto> getAllGameObjectsByGame(Integer gameId) {
         var game = gameRepository.findById(gameId)
                 .orElseThrow(() -> new GameNotFoundException("Game not found"));
@@ -35,12 +37,14 @@ public class GameObjectService {
         return gameObjectMapper.toDto(gameObjects);
     }
 
+    @Transactional(readOnly = true)
     public GameObjectDto getGameObjectById(UUID gameObjectId) {
         var gameObject = gameObjectRepository.findById(gameObjectId)
                 .orElseThrow(() -> new GameObjectNotFoundException("Can't find object with id " + gameObjectId));
         return gameObjectMapper.toDto(gameObject);
     }
 
+    @Transactional
     public GameObjectDto createGameObject(CreateGameObjectRequest createGameObjectRequest, Principal principal) {
         var game = gameRepository.findById(createGameObjectRequest.gameId())
                 .orElseThrow(() -> new GameNotFoundException("Can't find game"));
@@ -59,6 +63,7 @@ public class GameObjectService {
         return gameObjectMapper.toDto(newGameObject);
     }
 
+    @Transactional
     public GameObjectDto updateGameObjectById(UUID gameObjectId, UpdateGameObjectRequest updateGameObjectRequest, Principal principal) {
         var gameObject = gameObjectRepository.findById(gameObjectId)
                 .orElseThrow(() -> new GameObjectNotFoundException("Can't find object with id " + gameObjectId));
@@ -72,6 +77,7 @@ public class GameObjectService {
         return gameObjectMapper.toDto(gameObject);
     }
 
+    @Transactional
     public void deleteGameObjectById(UUID gameObjectId, Principal principal) {
         var gameObject = gameObjectRepository.findById(gameObjectId)
                 .orElseThrow(() -> new GameObjectNotFoundException("Can't find object"));

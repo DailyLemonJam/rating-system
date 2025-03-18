@@ -27,7 +27,6 @@ public class AdminService {
     private final ModelDtoMapper<AdminCommentDto, Comment> adminCommentMapper;
     private final ModelDtoMapper<AdminUserDto, User> adminUserMapper;
     private final RatingService ratingService;
-    private final RatingRepository ratingRepository;
 
     @Transactional(readOnly = true)
     public List<AdminCommentDto> getPendingComments() {

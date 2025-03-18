@@ -1,10 +1,7 @@
 package com.leverx.ratingsystem.service;
 
-import com.leverx.ratingsystem.dto.RatingDto;
 import com.leverx.ratingsystem.exception.UserRatingNotFoundException;
-import com.leverx.ratingsystem.mapper.ModelDtoMapper;
 import com.leverx.ratingsystem.model.comment.Comment;
-import com.leverx.ratingsystem.model.rating.Rating;
 import com.leverx.ratingsystem.repository.CommentRepository;
 import com.leverx.ratingsystem.repository.RatingRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +15,6 @@ import java.util.UUID;
 public class RatingService {
     private final RatingRepository ratingRepository;
     private final CommentRepository commentRepository;
-    private final ModelDtoMapper<RatingDto, Rating> ratingMapper;
 
     @Transactional
     public void recalculateUserRatingByUserId(UUID userId) {

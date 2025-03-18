@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.Principal;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -26,6 +27,13 @@ public class GameObjectService {
     private final ModelDtoMapper<GameObjectDto, GameObject> gameObjectMapper;
     private final GameRepository gameRepository;
     private final UserRepository userRepository;
+
+    public List<GameObjectDto> getAllGameObjectsByGame(Integer gameId) {
+        var game = gameRepository.findById(gameId)
+                .orElseThrow(() -> new GameNotFoundException("Game not found"));
+        var gameObjects = gameObjectRepository.findAllByGame(game);
+        return gameObjectMapper.toDto(gameObjects);
+    }
 
     public GameObjectDto getGameObjectById(UUID gameObjectId) {
         var gameObject = gameObjectRepository.findById(gameObjectId)

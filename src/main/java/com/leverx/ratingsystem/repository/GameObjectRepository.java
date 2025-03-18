@@ -14,6 +14,7 @@ import java.util.UUID;
 public interface GameObjectRepository extends JpaRepository<GameObject, UUID> {
     List<GameObject> findAllByUser(User user);
     List<GameObject> findAllByUser_Id(UUID userId);
+    List<GameObject> findAllByGame(Game game);
     @Query("SELECT g.user FROM GameObject g WHERE g.game = :game")
     List<User> findAllUsersByGame(Game game);
 }

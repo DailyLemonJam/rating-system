@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -18,6 +19,12 @@ import java.util.UUID;
 @RequestMapping("/objects")
 public class GameObjectController {
     private final GameObjectService gameObjectService;
+
+    @GetMapping("/game/{id}")
+    public ResponseEntity<List<GameObjectDto>> getAllGameObjectsByGame(@PathVariable Integer id) {
+        var gameObjectDtos = gameObjectService.getAllGameObjectsByGame(id);
+        return new ResponseEntity<>(gameObjectDtos, HttpStatus.OK);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<GameObjectDto> getGameObjectById(@PathVariable UUID id) {

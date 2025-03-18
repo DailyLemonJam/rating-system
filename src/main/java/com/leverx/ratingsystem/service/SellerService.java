@@ -35,9 +35,10 @@ public class SellerService {
     private final GameRepository gameRepository;
 
     @Transactional(readOnly = true)
-    public List<RatingDto> getTopRatingsSellers(TopSellersArgsRequest request) {
-        double minRating = request.minRating();
-        double maxRating = request.maxRating();
+    public List<RatingDto> getTopRatingsSellers(double minRating, double maxRating) {
+        if (minRating > maxRating) {
+            throw new IllegalArgumentException("Min Rating must be greater than Max Rating");
+        }
         var topRatings = ratingRepository
                 .findAllByAverageRatingBetweenOrderByAverageRatingDesc(minRating, maxRating);
         return ratingMapper.toDto(topRatings);

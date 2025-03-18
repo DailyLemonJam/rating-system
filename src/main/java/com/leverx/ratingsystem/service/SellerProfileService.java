@@ -14,6 +14,7 @@ import com.leverx.ratingsystem.model.rating.Rating;
 import com.leverx.ratingsystem.model.user.UserStatus;
 import com.leverx.ratingsystem.repository.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +34,6 @@ public class SellerProfileService {
     private final ModelDtoMapper<GameObjectDto, GameObject> gameObjectMapper;
     private final ModelDtoMapper<RatingDto, Rating> ratingMapper;
     private final GameRepository gameRepository;
-    private final RatingService ratingService;
 
     @Transactional(readOnly = true)
     public List<RatingDto> getTopRatingsSellers(double minRating, double maxRating) {
@@ -57,26 +57,6 @@ public class SellerProfileService {
                             userRatingsWithObjectsFromGameDto.add(ratingMapper.toDto(rating)));
         }
         return userRatingsWithObjectsFromGameDto;
-    }
-
-    @Transactional
-    public CommentDto createCommentOnSellerProfile(UUID userId, CreateCommentRequest createCommentRequest) {
-        var user = userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException("User not found"));
-        if (user.getStatus() != UserStatus.APPROVED) {
-            throw new UserNotFoundException("User not found");
-        }
-        var comment = Comment.builder()
-                .message(createCommentRequest.message())
-                .grade(createCommentRequest.grade())
-                .user(user)
-                .createdAt(Instant.now())
-                .status(CommentStatus.PENDING)
-                .editCount(0)
-                .build();
-        commentRepository.save(comment);
-        ratingService.recalculateUserRatingByUserId(userId);
-        return commentMapper.toDto(comment);
     }
 
     @Transactional(readOnly = true)

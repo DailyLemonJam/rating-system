@@ -17,7 +17,7 @@ public class RatingService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public void recalculateUserRatingByUserId(UUID userId) {
+    public void updateUserRatingByUserId(UUID userId) {
         var rating = ratingRepository.findByUser_Id(userId)
                 .orElseThrow(() -> new UserRatingNotFoundException("Can't find user or his rating"));
         var comments = commentRepository.findAllByUser_Id(userId);

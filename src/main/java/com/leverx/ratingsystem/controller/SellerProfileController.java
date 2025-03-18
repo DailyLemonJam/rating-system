@@ -3,10 +3,8 @@ package com.leverx.ratingsystem.controller;
 import com.leverx.ratingsystem.config.AppConfiguration;
 import com.leverx.ratingsystem.dto.RatingDto;
 import com.leverx.ratingsystem.dto.comment.CommentDto;
-import com.leverx.ratingsystem.dto.comment.CreateCommentRequest;
 import com.leverx.ratingsystem.dto.gameobject.GameObjectDto;
 import com.leverx.ratingsystem.service.SellerProfileService;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
@@ -39,13 +37,6 @@ public class SellerProfileController {
     public ResponseEntity<List<RatingDto>> getSellerRatingsWithObjectsFromGame(@PathVariable Integer id) {
         var topRatings = sellerService.getSellerRatingsWithObjectsFromGame(id);
         return new ResponseEntity<>(topRatings, HttpStatus.OK);
-    }
-
-    @PostMapping("/{id}/comments")
-    public ResponseEntity<CommentDto> createCommentToSeller(@PathVariable UUID id,
-                                                            @Valid @RequestBody CreateCommentRequest createCommentRequest) {
-        var commentDto = sellerService.createCommentOnSellerProfile(id, createCommentRequest);
-        return new ResponseEntity<>(commentDto, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}/comments")

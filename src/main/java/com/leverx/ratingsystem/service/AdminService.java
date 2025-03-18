@@ -10,6 +10,7 @@ import com.leverx.ratingsystem.model.comment.CommentStatus;
 import com.leverx.ratingsystem.model.user.User;
 import com.leverx.ratingsystem.model.user.UserStatus;
 import com.leverx.ratingsystem.repository.CommentRepository;
+import com.leverx.ratingsystem.repository.RatingRepository;
 import com.leverx.ratingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,7 @@ public class AdminService {
     private final UserRepository userRepository;
     private final ModelDtoMapper<AdminCommentDto, Comment> adminCommentMapper;
     private final ModelDtoMapper<AdminUserDto, User> adminUserMapper;
+    private final RatingService ratingService;
 
     @Transactional(readOnly = true)
     public List<AdminCommentDto> getPendingComments() {
@@ -38,7 +40,7 @@ public class AdminService {
                 .orElseThrow(() -> new CommentNotFoundException("Comment not found"));
         comment.setStatus(CommentStatus.APPROVED);
         commentRepository.save(comment);
-        // TODO: Tell Rating system to update Seller rating
+        ratingService.recalculateRatingByUserId(comment.getUser().getId());
     }
 
     @Transactional

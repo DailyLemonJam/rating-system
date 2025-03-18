@@ -9,10 +9,12 @@ import com.leverx.ratingsystem.exception.UserAlreadyExistsException;
 import com.leverx.ratingsystem.mapper.ModelDtoMapper;
 import com.leverx.ratingsystem.model.comment.Comment;
 import com.leverx.ratingsystem.model.comment.CommentStatus;
+import com.leverx.ratingsystem.model.rating.Rating;
 import com.leverx.ratingsystem.model.user.User;
 import com.leverx.ratingsystem.model.user.UserEmailStatus;
 import com.leverx.ratingsystem.model.user.UserStatus;
 import com.leverx.ratingsystem.repository.CommentRepository;
+import com.leverx.ratingsystem.repository.RatingRepository;
 import com.leverx.ratingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,8 @@ public class CommentService {
     private final RoleService roleService;
     private final ModelDtoMapper<CommentDto, Comment> commentMapper;
     private final ModelDtoMapper<AdminCommentDto, Comment> adminCommentMapper;
+    private final RatingRepository ratingRepository;
+    private final RatingService ratingService;
 
     @Transactional(readOnly = true)
     public CommentDto getCommentById(UUID commentId) {
@@ -60,7 +64,11 @@ public class CommentService {
                 .editCount(0)
                 .build();
         commentRepository.save(comment);
-        // TODO: tell rating system to create and update rating
+        var rating = Rating.builder()
+                .user(newSeller)
+                .build();
+        ratingRepository.save(rating);
+        ratingService.recalculateRatingByUserId(rating.getUser().getId());
         return commentMapper.toDto(comment);
     }
 

@@ -48,7 +48,7 @@ public class AuthService {
             throw new IncorrectUsernameOrPasswordException("Incorrect username or password");
         }
         var user = userRepository.findByName(authRequest.username())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found")); // e.g. could be deleted while having valid token
+                .orElseThrow(() -> new UserNotFoundException("User not found")); // e.g. could be deleted while having valid token
         if (user.getEmailStatus() == UserEmailStatus.PENDING) {
             throw new UserNotAllowedToLoginException("Email wasn't verified");
         }
@@ -95,7 +95,7 @@ public class AuthService {
         String requestEmail = verifyUserEmailRequest.email();
         String requestConfirmationCode = verifyUserEmailRequest.confirmationCode();
         var user = userRepository.findByEmail(requestEmail)
-                .orElseThrow(() -> new UsernameNotFoundException("Can't find user"));
+                .orElseThrow(() -> new UserNotFoundException("Can't find user"));
         if (user.getEmailStatus() == UserEmailStatus.VERIFIED) {
             throw new IncorrectVerifyUserEmailRequestException("This email was already verified");
         }

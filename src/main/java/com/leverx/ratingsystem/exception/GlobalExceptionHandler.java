@@ -3,6 +3,7 @@ package com.leverx.ratingsystem.exception;
 import com.leverx.ratingsystem.dto.ErrorDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -23,6 +24,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorDto> handleMethodArgumentNotValidException(Exception e) {
+        System.out.println(e.getMessage());
         return new ResponseEntity<>(new ErrorDto("Oopsie, something went wrong"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -38,7 +40,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<ErrorDto> handleUserNotFoundException(UserNotFoundException e) {
-        return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.FORBIDDEN);
+        return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<ErrorDto> handleUsernameNotFoundException(UsernameNotFoundException e) {
+        return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(GameObjectNotFoundException.class)

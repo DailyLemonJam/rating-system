@@ -68,7 +68,7 @@ public class CommentService {
                 .user(newSeller)
                 .build();
         ratingRepository.save(rating);
-        ratingService.recalculateRatingByUserId(rating.getUser().getId());
+        ratingService.recalculateUserRatingByUserId(rating.getUser().getId());
         return commentMapper.toDto(comment);
     }
 

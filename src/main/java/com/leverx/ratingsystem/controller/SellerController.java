@@ -2,7 +2,6 @@ package com.leverx.ratingsystem.controller;
 
 import com.leverx.ratingsystem.config.AppConfiguration;
 import com.leverx.ratingsystem.dto.RatingDto;
-import com.leverx.ratingsystem.dto.TopSellersArgsRequest;
 import com.leverx.ratingsystem.dto.comment.CommentDto;
 import com.leverx.ratingsystem.dto.comment.CreateCommentRequest;
 import com.leverx.ratingsystem.dto.gameobject.GameObjectDto;

@@ -6,9 +6,11 @@ import com.leverx.ratingsystem.dto.auth.ResetPasswordRequest;
 import com.leverx.ratingsystem.dto.auth.VerifyUserEmailRequest;
 import com.leverx.ratingsystem.dto.auth.CreateUserRequest;
 import com.leverx.ratingsystem.exception.*;
+import com.leverx.ratingsystem.model.rating.Rating;
 import com.leverx.ratingsystem.model.user.User;
 import com.leverx.ratingsystem.model.user.UserEmailStatus;
 import com.leverx.ratingsystem.model.user.UserStatus;
+import com.leverx.ratingsystem.repository.RatingRepository;
 import com.leverx.ratingsystem.repository.UserRepository;
 import com.leverx.ratingsystem.util.ConfirmationCodeGenerator;
 import com.leverx.ratingsystem.util.JwtTokenUtil;
@@ -34,6 +36,7 @@ public class AuthService {
     private final ConfirmationCodeService confirmationCodeService;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final RatingRepository ratingRepository;
     private final UserService userService;
     private final RoleService roleService;
 
@@ -83,6 +86,14 @@ public class AuthService {
                 .createdAt(Instant.now())
                 .build();
         userRepository.save(user);
+        if (ratingRepository.findByUser(user).isEmpty()) {
+            var rating = Rating.builder()
+                    .user(user)
+                    .averageRating(0)
+                    .totalRatings(0)
+                    .build();
+            ratingRepository.save(rating);
+        }
         String confirmationCode = confirmationCodeGenerator.generateConfirmationCode();
         confirmationCodeService.save(confirmationCode, requestEmail);
         emailService.sendConfirmationCode(requestEmail,

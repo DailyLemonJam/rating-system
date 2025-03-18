@@ -1,7 +1,6 @@
 package com.leverx.ratingsystem.service;
 
 import com.leverx.ratingsystem.dto.RatingDto;
-import com.leverx.ratingsystem.dto.TopSellersArgsRequest;
 import com.leverx.ratingsystem.dto.comment.CommentDto;
 import com.leverx.ratingsystem.dto.comment.CreateCommentRequest;
 import com.leverx.ratingsystem.dto.gameobject.GameObjectDto;

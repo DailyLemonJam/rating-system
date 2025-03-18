@@ -7,7 +7,6 @@ import com.leverx.ratingsystem.model.comment.Comment;
 import com.leverx.ratingsystem.model.rating.Rating;
 import com.leverx.ratingsystem.repository.CommentRepository;
 import com.leverx.ratingsystem.repository.RatingRepository;
-import com.leverx.ratingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +22,7 @@ public class RatingService {
 
     @Transactional
     public void recalculateRatingByUserId(UUID userId) {
-        var rating = ratingRepository.findByUserId(userId)
+        var rating = ratingRepository.findByUser_Id(userId)
                 .orElseThrow(() -> new UserRatingNotFoundException("Can't find user or his rating"));
         var comments = commentRepository.findAllByUser_Id(userId);
         double averageRating = comments.stream()
@@ -33,13 +32,6 @@ public class RatingService {
         rating.setAverageRating(averageRating);
         rating.setTotalRatings(comments.size());
         ratingRepository.save(rating);
-    }
-
-    @Transactional(readOnly = true)
-    public RatingDto getRatingByUserId(UUID userId) {
-        var ratingDto = ratingRepository.findByUserId(userId)
-                .orElseThrow(() -> new UserRatingNotFoundException("Can't find rating of this user"));
-        return ratingMapper.toDto(ratingDto);
     }
 
 }

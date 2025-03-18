@@ -92,7 +92,7 @@ public class SellerService {
 
     @Transactional(readOnly = true)
     public RatingDto getRatingByUserId(UUID userId) {
-        var rating = ratingRepository.findById(userId)
+        var rating = ratingRepository.findByUser_Id(userId)
                 .orElseThrow(() -> new UserNotFoundException("User rating not found"));
         return ratingMapper.toDto(rating);
     }

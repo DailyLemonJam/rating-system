@@ -3,13 +3,10 @@ package com.leverx.ratingsystem.controller;
 import com.leverx.ratingsystem.config.AppConfiguration;
 import com.leverx.ratingsystem.dto.RatingDto;
 import com.leverx.ratingsystem.dto.comment.CommentDto;
-import com.leverx.ratingsystem.dto.comment.CreateCommentRequest;
 import com.leverx.ratingsystem.dto.gameobject.GameObjectDto;
-import com.leverx.ratingsystem.service.SellerService;
-import jakarta.validation.Valid;
+import com.leverx.ratingsystem.service.SellerProfileService;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,15 +20,15 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/sellers")
-public class SellerController {
-    private final SellerService sellerService;
+public class SellerProfileController {
+    private final SellerProfileService sellerService;
 
     @GetMapping("/top")
     public ResponseEntity<List<RatingDto>> getTopRatingSellers(@Min(AppConfiguration.MIN_GRADE) @Max(AppConfiguration.MAX_GRADE)
                                                                    @RequestParam(required = false, defaultValue = "1") double minRating,
                                                                @Min(AppConfiguration.MIN_GRADE) @Max(AppConfiguration.MAX_GRADE)
                                                                @RequestParam(required = false, defaultValue = "5") Double maxRating) {
-        log.info("Min: " + minRating + ", Max: " + maxRating);
+        log.info("Min: {}, Max: {}", minRating, maxRating);
         var topRatings = sellerService.getTopRatingsSellers(minRating, maxRating);
         return new ResponseEntity<>(topRatings, HttpStatus.OK);
     }
@@ -40,13 +37,6 @@ public class SellerController {
     public ResponseEntity<List<RatingDto>> getSellerRatingsWithObjectsFromGame(@PathVariable Integer id) {
         var topRatings = sellerService.getSellerRatingsWithObjectsFromGame(id);
         return new ResponseEntity<>(topRatings, HttpStatus.OK);
-    }
-
-    @PostMapping("/{id}/comments")
-    public ResponseEntity<CommentDto> createCommentToSeller(@PathVariable UUID id,
-                                                            @Valid @RequestBody CreateCommentRequest createCommentRequest) {
-        var commentDto = sellerService.createCommentOnSellerProfile(id, createCommentRequest);
-        return new ResponseEntity<>(commentDto, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}/comments")

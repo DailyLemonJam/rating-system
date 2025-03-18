@@ -2,6 +2,7 @@ package com.leverx.ratingsystem.service;
 
 import com.leverx.ratingsystem.exception.UserRatingNotFoundException;
 import com.leverx.ratingsystem.model.comment.Comment;
+import com.leverx.ratingsystem.model.comment.CommentStatus;
 import com.leverx.ratingsystem.repository.CommentRepository;
 import com.leverx.ratingsystem.repository.RatingRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,10 +18,10 @@ public class RatingService {
     private final CommentRepository commentRepository;
 
     @Transactional
-    public void recalculateUserRatingByUserId(UUID userId) {
+    public void updateUserRatingByUserId(UUID userId) {
         var rating = ratingRepository.findByUser_Id(userId)
                 .orElseThrow(() -> new UserRatingNotFoundException("Can't find user or his rating"));
-        var comments = commentRepository.findAllByUser_Id(userId);
+        var comments = commentRepository.findAllByUser_IdAndStatus(userId, CommentStatus.APPROVED);
         double averageRating = comments.stream()
                 .mapToInt(Comment::getGrade)
                 .average()

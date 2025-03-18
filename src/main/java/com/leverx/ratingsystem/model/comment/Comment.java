@@ -29,6 +29,8 @@ public class Comment {
     @Column(columnDefinition = "TEXT")
     private String message;
 
+    private String encryptedPassword;
+
     @Min(AppConfiguration.MIN_GRADE)
     @Max(AppConfiguration.MAX_GRADE)
     private int grade;

@@ -104,4 +104,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ErrorDto("Incorrect values of arguments"), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(IncorrectCommentPasswordException.class)
+    public ResponseEntity<ErrorDto> handleIncorrectCommentPasswordException(IncorrectCommentPasswordException e) {
+        return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.FORBIDDEN);
+    }
 }

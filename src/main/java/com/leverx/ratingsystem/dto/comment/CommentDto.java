@@ -10,6 +10,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 public record CommentDto(@NotBlank String message,
+                         @NotBlank UUID commentId,
                          @NotNull @Min(AppConfiguration.MIN_GRADE)
                          @NotNull @Max(AppConfiguration.MAX_GRADE) Integer grade,
                          @NotBlank Instant createdAt,

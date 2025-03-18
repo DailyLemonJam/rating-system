@@ -14,7 +14,8 @@ public class RatingMapper implements ModelDtoMapper<RatingDto, Rating> {
     @Override
     public RatingDto toDto(Rating rating) {
         return new RatingDto(rating.getUser().getId(),
-                rating.getAverageRating());
+                rating.getAverageRating(),
+                rating.getTotalRatings());
     }
 
     @Override

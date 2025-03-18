@@ -6,6 +6,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 public record GameObjectDto(@NotBlank String title,
+                            @NotBlank UUID gameObjectId,
                             @NotBlank String description,
                             @NotBlank Instant createdAt,
                             @NotBlank Instant updatedAt,

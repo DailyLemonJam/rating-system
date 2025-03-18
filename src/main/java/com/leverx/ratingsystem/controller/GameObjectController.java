@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -25,21 +26,24 @@ public class GameObjectController {
     }
 
     @PostMapping
-    public ResponseEntity<GameObjectDto> createGameObject(@Valid @RequestBody CreateGameObjectRequest createGameObjectRequest) {
-        var commentDto = gameObjectService.createGameObject(createGameObjectRequest);
+    public ResponseEntity<GameObjectDto> createGameObject(@Valid @RequestBody CreateGameObjectRequest createGameObjectRequest,
+                                                          Principal principal) {
+        var commentDto = gameObjectService.createGameObject(createGameObjectRequest, principal);
         return new ResponseEntity<>(commentDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<GameObjectDto> updateGameObjectById(@PathVariable UUID id,
-                                                              @Valid @RequestBody UpdateGameObjectRequest updateGameObjectRequest) {
-        var gameObjectDto = gameObjectService.updateGameObjectById(id, updateGameObjectRequest);
+                                                              @Valid @RequestBody UpdateGameObjectRequest updateGameObjectRequest,
+                                                              Principal principal) {
+        var gameObjectDto = gameObjectService.updateGameObjectById(id, updateGameObjectRequest, principal);
         return new ResponseEntity<>(gameObjectDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteGameObjectById(@PathVariable UUID id) {
-        gameObjectService.deleteGameObjectById(id);
+    public ResponseEntity<Void> deleteGameObjectById(@PathVariable UUID id,
+                                                     Principal principal) {
+        gameObjectService.deleteGameObjectById(id, principal);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

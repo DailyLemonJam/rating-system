@@ -2,9 +2,9 @@ package com.leverx.ratingsystem.config;
 
 import com.leverx.ratingsystem.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -33,7 +33,10 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    // TODO: matchers
+                    auth.requestMatchers("/admin/**").hasRole(AppConfiguration.ROLE_ADMIN_NO_PREFIX);
+                    auth.requestMatchers(HttpMethod.POST, "/objects/**").hasRole(AppConfiguration.ROLE_SELLER_NO_PREFIX);
+                    auth.requestMatchers(HttpMethod.PUT, "/objects/**").hasRole(AppConfiguration.ROLE_SELLER_NO_PREFIX);
+                    auth.requestMatchers(HttpMethod.DELETE, "/objects/**").hasRole(AppConfiguration.ROLE_SELLER_NO_PREFIX);
                     auth.anyRequest().permitAll();
                 })
                 .sessionManagement(configurer ->

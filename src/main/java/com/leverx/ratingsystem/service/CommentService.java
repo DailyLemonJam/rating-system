@@ -68,7 +68,7 @@ public class CommentService {
                 .user(newSeller)
                 .build();
         ratingRepository.save(rating);
-        ratingService.recalculateRatingByUserId(rating.getUser().getId());
+        ratingService.recalculateUserRatingByUserId(rating.getUser().getId());
         return commentMapper.toDto(comment);
     }
 
@@ -81,16 +81,17 @@ public class CommentService {
         comment.setStatus(CommentStatus.PENDING);
         comment.setEditCount(comment.getEditCount() + 1);
         commentRepository.save(comment);
+        ratingService.recalculateUserRatingByUserId(comment.getUser().getId());
         return commentMapper.toDto(comment);
     }
 
     @Transactional
     public void deleteCommentById(UUID commentId) {
-        if (commentRepository.existsById(commentId)) {
-            commentRepository.deleteById(commentId);
-            return;
-        }
-        throw new CommentNotFoundException("Can't find comment with id: " + commentId);
+        var comment = commentRepository.findById(commentId)
+                .orElseThrow(() -> new CommentNotFoundException("Can't find comment"));
+        var userId = comment.getUser().getId();
+        commentRepository.deleteById(commentId);
+        ratingService.recalculateUserRatingByUserId(userId);
     }
 
 }

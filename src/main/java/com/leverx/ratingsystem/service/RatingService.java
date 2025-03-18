@@ -21,7 +21,7 @@ public class RatingService {
     private final ModelDtoMapper<RatingDto, Rating> ratingMapper;
 
     @Transactional
-    public void recalculateRatingByUserId(UUID userId) {
+    public void recalculateUserRatingByUserId(UUID userId) {
         var rating = ratingRepository.findByUser_Id(userId)
                 .orElseThrow(() -> new UserRatingNotFoundException("Can't find user or his rating"));
         var comments = commentRepository.findAllByUser_Id(userId);

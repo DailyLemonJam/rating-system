@@ -6,9 +6,11 @@ import com.leverx.ratingsystem.dto.auth.ResetPasswordRequest;
 import com.leverx.ratingsystem.dto.auth.VerifyUserEmailRequest;
 import com.leverx.ratingsystem.dto.auth.CreateUserRequest;
 import com.leverx.ratingsystem.exception.*;
+import com.leverx.ratingsystem.model.rating.Rating;
 import com.leverx.ratingsystem.model.user.User;
 import com.leverx.ratingsystem.model.user.UserEmailStatus;
 import com.leverx.ratingsystem.model.user.UserStatus;
+import com.leverx.ratingsystem.repository.RatingRepository;
 import com.leverx.ratingsystem.repository.UserRepository;
 import com.leverx.ratingsystem.util.ConfirmationCodeGenerator;
 import com.leverx.ratingsystem.util.JwtTokenUtil;
@@ -34,6 +36,7 @@ public class AuthService {
     private final ConfirmationCodeService confirmationCodeService;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
+    private final RatingRepository ratingRepository;
     private final UserService userService;
     private final RoleService roleService;
 
@@ -48,7 +51,7 @@ public class AuthService {
             throw new IncorrectUsernameOrPasswordException("Incorrect username or password");
         }
         var user = userRepository.findByName(authRequest.username())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found")); // e.g. could be deleted while having valid token
+                .orElseThrow(() -> new UserNotFoundException("User not found")); // e.g. could be deleted while having valid token
         if (user.getEmailStatus() == UserEmailStatus.PENDING) {
             throw new UserNotAllowedToLoginException("Email wasn't verified");
         }
@@ -83,6 +86,14 @@ public class AuthService {
                 .createdAt(Instant.now())
                 .build();
         userRepository.save(user);
+        if (ratingRepository.findByUser(user).isEmpty()) {
+            var rating = Rating.builder()
+                    .user(user)
+                    .averageRating(0)
+                    .totalRatings(0)
+                    .build();
+            ratingRepository.save(rating);
+        }
         String confirmationCode = confirmationCodeGenerator.generateConfirmationCode();
         confirmationCodeService.save(confirmationCode, requestEmail);
         emailService.sendConfirmationCode(requestEmail,
@@ -95,7 +106,7 @@ public class AuthService {
         String requestEmail = verifyUserEmailRequest.email();
         String requestConfirmationCode = verifyUserEmailRequest.confirmationCode();
         var user = userRepository.findByEmail(requestEmail)
-                .orElseThrow(() -> new UsernameNotFoundException("Can't find user"));
+                .orElseThrow(() -> new UserNotFoundException("Can't find user"));
         if (user.getEmailStatus() == UserEmailStatus.VERIFIED) {
             throw new IncorrectVerifyUserEmailRequestException("This email was already verified");
         }
@@ -103,7 +114,7 @@ public class AuthService {
             throw new IncorrectVerifyUserEmailRequestException("Incorrect email or confirmation code");
         }
         String value = confirmationCodeService.get(requestConfirmationCode);
-        if (!value.equals(requestEmail)) {
+        if (value != null && !value.equals(requestEmail)) {
             throw new IncorrectVerifyUserEmailRequestException("Incorrect email");
         }
         confirmationCodeService.delete(requestConfirmationCode);
@@ -132,7 +143,7 @@ public class AuthService {
         }
         String value = confirmationCodeService.get(requestCode);
         String requestEmail = resetPasswordRequest.email();
-        if (!value.equals(requestEmail)) {
+        if (value != null && !value.equals(requestEmail)) {
             throw new IncorrectResetPasswordRequestException("Incorrect email");
         }
         confirmationCodeService.delete(requestCode);

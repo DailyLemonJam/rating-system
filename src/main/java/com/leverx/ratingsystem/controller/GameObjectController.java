@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
+import java.util.List;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -18,6 +20,12 @@ import java.util.UUID;
 public class GameObjectController {
     private final GameObjectService gameObjectService;
 
+    @GetMapping("/game/{id}")
+    public ResponseEntity<List<GameObjectDto>> getAllGameObjectsByGame(@PathVariable Integer id) {
+        var gameObjectDtos = gameObjectService.getAllGameObjectsByGame(id);
+        return new ResponseEntity<>(gameObjectDtos, HttpStatus.OK);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<GameObjectDto> getGameObjectById(@PathVariable UUID id) {
         var gameObjectDto = gameObjectService.getGameObjectById(id);
@@ -25,21 +33,24 @@ public class GameObjectController {
     }
 
     @PostMapping
-    public ResponseEntity<GameObjectDto> createGameObject(@Valid @RequestBody CreateGameObjectRequest createGameObjectRequest) {
-        var commentDto = gameObjectService.createGameObject(createGameObjectRequest);
+    public ResponseEntity<GameObjectDto> createGameObject(@Valid @RequestBody CreateGameObjectRequest createGameObjectRequest,
+                                                          Principal principal) {
+        var commentDto = gameObjectService.createGameObject(createGameObjectRequest, principal);
         return new ResponseEntity<>(commentDto, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<GameObjectDto> updateGameObjectById(@PathVariable UUID id,
-                                                              @Valid @RequestBody UpdateGameObjectRequest updateGameObjectRequest) {
-        var gameObjectDto = gameObjectService.updateGameObjectById(id, updateGameObjectRequest);
+                                                              @Valid @RequestBody UpdateGameObjectRequest updateGameObjectRequest,
+                                                              Principal principal) {
+        var gameObjectDto = gameObjectService.updateGameObjectById(id, updateGameObjectRequest, principal);
         return new ResponseEntity<>(gameObjectDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteGameObjectById(@PathVariable UUID id) {
-        gameObjectService.deleteGameObjectById(id);
+    public ResponseEntity<Void> deleteGameObjectById(@PathVariable UUID id,
+                                                     Principal principal) {
+        gameObjectService.deleteGameObjectById(id, principal);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

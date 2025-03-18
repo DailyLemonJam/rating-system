@@ -7,9 +7,11 @@ import com.leverx.ratingsystem.exception.UserNotFoundException;
 import com.leverx.ratingsystem.mapper.ModelDtoMapper;
 import com.leverx.ratingsystem.model.comment.Comment;
 import com.leverx.ratingsystem.model.comment.CommentStatus;
+import com.leverx.ratingsystem.model.rating.Rating;
 import com.leverx.ratingsystem.model.user.User;
 import com.leverx.ratingsystem.model.user.UserStatus;
 import com.leverx.ratingsystem.repository.CommentRepository;
+import com.leverx.ratingsystem.repository.RatingRepository;
 import com.leverx.ratingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,8 @@ public class AdminService {
     private final UserRepository userRepository;
     private final ModelDtoMapper<AdminCommentDto, Comment> adminCommentMapper;
     private final ModelDtoMapper<AdminUserDto, User> adminUserMapper;
+    private final RatingService ratingService;
+    private final RatingRepository ratingRepository;
 
     @Transactional(readOnly = true)
     public List<AdminCommentDto> getPendingComments() {
@@ -38,7 +42,7 @@ public class AdminService {
                 .orElseThrow(() -> new CommentNotFoundException("Comment not found"));
         comment.setStatus(CommentStatus.APPROVED);
         commentRepository.save(comment);
-        // TODO: Tell Rating system to update Seller rating
+        ratingService.recalculateRatingByUserId(comment.getUser().getId());
     }
 
     @Transactional
@@ -61,6 +65,14 @@ public class AdminService {
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
         user.setStatus(UserStatus.APPROVED);
         userRepository.save(user);
+        if (ratingRepository.findByUser_Id(userId).isEmpty()) {
+            var rating = Rating.builder()
+                    .user(user)
+                    .averageRating(0)
+                    .totalRatings(0)
+                    .build();
+            ratingRepository.save(rating);
+        }
     }
 
     @Transactional

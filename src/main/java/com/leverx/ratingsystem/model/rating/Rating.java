@@ -28,4 +28,6 @@ public class Rating {
 
     private double averageRating;
 
+    private Integer totalRatings;
+
 }

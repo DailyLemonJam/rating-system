@@ -20,13 +20,12 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
-@Configuration
 @EnableMethodSecurity
+@Configuration
+@RequiredArgsConstructor
 public class SecurityConfiguration {
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private JwtRequestFilter jwtRequestFilter;
+    private final UserService userService;
+    private final JwtRequestFilter jwtRequestFilter;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {

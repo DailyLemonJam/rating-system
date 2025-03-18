@@ -103,7 +103,7 @@ public class AuthService {
             throw new IncorrectVerifyUserEmailRequestException("Incorrect email or confirmation code");
         }
         String value = confirmationCodeService.get(requestConfirmationCode);
-        if (!value.equals(requestEmail)) {
+        if (value != null && !value.equals(requestEmail)) {
             throw new IncorrectVerifyUserEmailRequestException("Incorrect email");
         }
         confirmationCodeService.delete(requestConfirmationCode);
@@ -132,7 +132,7 @@ public class AuthService {
         }
         String value = confirmationCodeService.get(requestCode);
         String requestEmail = resetPasswordRequest.email();
-        if (!value.equals(requestEmail)) {
+        if (value != null && !value.equals(requestEmail)) {
             throw new IncorrectResetPasswordRequestException("Incorrect email");
         }
         confirmationCodeService.delete(requestCode);

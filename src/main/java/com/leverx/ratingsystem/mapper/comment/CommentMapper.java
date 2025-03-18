@@ -14,6 +14,7 @@ public class CommentMapper implements ModelDtoMapper<CommentDto, Comment> {
     @Override
     public CommentDto toDto(Comment comment) {
         return new CommentDto(comment.getMessage(),
+                comment.getId(),
                 comment.getGrade(),
                 comment.getCreatedAt(),
                 comment.getUser().getId());

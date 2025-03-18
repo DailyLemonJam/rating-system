@@ -8,6 +8,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 public record AdminCommentDto(@NotBlank UUID userId,
+                              @NotBlank UUID commentId,
                               @NotBlank String message,
                               @NotNull Integer grade,
                               @NotBlank Instant createdAt,

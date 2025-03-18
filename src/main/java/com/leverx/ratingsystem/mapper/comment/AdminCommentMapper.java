@@ -14,6 +14,7 @@ public class AdminCommentMapper implements ModelDtoMapper<AdminCommentDto, Comme
     @Override
     public AdminCommentDto toDto(Comment comment) {
         return new AdminCommentDto(comment.getUser().getId(),
+                comment.getId(),
                 comment.getMessage(),
                 comment.getGrade(),
                 comment.getCreatedAt(),

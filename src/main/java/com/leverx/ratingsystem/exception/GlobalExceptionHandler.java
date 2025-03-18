@@ -1,13 +1,16 @@
 package com.leverx.ratingsystem.exception;
 
 import com.leverx.ratingsystem.dto.ErrorDto;
+import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.oxm.ValidationFailureException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.HandlerMethodValidationException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestControllerAdvice
@@ -27,6 +30,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorDto> handleMethodArgumentNotValidException(Exception e) {
         log.error(e.getMessage());
+        log.error(e.getClass().getName());
         return new ResponseEntity<>(new ErrorDto("Oopsie, something went wrong"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
@@ -88,6 +92,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserRatingNotFoundException.class)
     public ResponseEntity<ErrorDto> handleUserRatingNotFoundException(UserRatingNotFoundException e) {
         return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorDto> handleIllegalArgumentException(IllegalArgumentException e) {
+        return new ResponseEntity<>(new ErrorDto("One or more arguments are incorrect"), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(HandlerMethodValidationException.class)
+    public ResponseEntity<ErrorDto> handleHandlerMethodValidationException(HandlerMethodValidationException e) {
+        return new ResponseEntity<>(new ErrorDto("Incorrect values of arguments"), HttpStatus.NOT_FOUND);
     }
 
 }

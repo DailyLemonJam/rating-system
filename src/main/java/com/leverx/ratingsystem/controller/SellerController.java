@@ -11,6 +11,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/sellers")
@@ -26,9 +28,10 @@ public class SellerController {
 
     @GetMapping("/top")
     public ResponseEntity<List<RatingDto>> getTopRatingSellers(@Min(AppConfiguration.MIN_GRADE) @Max(AppConfiguration.MAX_GRADE)
-                                                                   @RequestParam(required = false) Double minRating,
+                                                                   @RequestParam(required = false, defaultValue = "1") double minRating,
                                                                @Min(AppConfiguration.MIN_GRADE) @Max(AppConfiguration.MAX_GRADE)
-                                                               @RequestBody(required = false) Double maxRating) {
+                                                               @RequestParam(required = false, defaultValue = "5") Double maxRating) {
+        log.info("Min: " + minRating + ", Max: " + maxRating);
         var topRatings = sellerService.getTopRatingsSellers(minRating, maxRating);
         return new ResponseEntity<>(topRatings, HttpStatus.OK);
     }

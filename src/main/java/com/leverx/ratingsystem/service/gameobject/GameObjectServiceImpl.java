@@ -1,4 +1,4 @@
-package com.leverx.ratingsystem.service;
+package com.leverx.ratingsystem.service.gameobject;
 
 import com.leverx.ratingsystem.dto.gameobject.CreateGameObjectRequest;
 import com.leverx.ratingsystem.dto.gameobject.GameObjectDto;
@@ -23,13 +23,14 @@ import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
-public class GameObjectService {
+public class GameObjectServiceImpl implements GameObjectService {
     private final GameObjectRepository gameObjectRepository;
     private final ModelDtoMapper<GameObjectDto, GameObject> gameObjectMapper;
     private final GameRepository gameRepository;
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
+    @Override
     public List<GameObjectDto> getAllGameObjectsByGame(Integer gameId) {
         var game = gameRepository.findById(gameId)
                 .orElseThrow(() -> new GameNotFoundException("Game not found"));
@@ -38,6 +39,7 @@ public class GameObjectService {
     }
 
     @Transactional(readOnly = true)
+    @Override
     public GameObjectDto getGameObjectById(UUID gameObjectId) {
         var gameObject = gameObjectRepository.findById(gameObjectId)
                 .orElseThrow(() -> new GameObjectNotFoundException("Can't find object with id " + gameObjectId));
@@ -45,6 +47,7 @@ public class GameObjectService {
     }
 
     @Transactional
+    @Override
     public GameObjectDto createGameObject(CreateGameObjectRequest createGameObjectRequest, Principal principal) {
         var game = gameRepository.findById(createGameObjectRequest.gameId())
                 .orElseThrow(() -> new GameNotFoundException("Can't find game"));
@@ -64,6 +67,7 @@ public class GameObjectService {
     }
 
     @Transactional
+    @Override
     public GameObjectDto updateGameObjectById(UUID gameObjectId, UpdateGameObjectRequest updateGameObjectRequest, Principal principal) {
         var gameObject = gameObjectRepository.findById(gameObjectId)
                 .orElseThrow(() -> new GameObjectNotFoundException("Can't find object with id " + gameObjectId));
@@ -78,6 +82,7 @@ public class GameObjectService {
     }
 
     @Transactional
+    @Override
     public void deleteGameObjectById(UUID gameObjectId, Principal principal) {
         var gameObject = gameObjectRepository.findById(gameObjectId)
                 .orElseThrow(() -> new GameObjectNotFoundException("Can't find object"));

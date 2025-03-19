@@ -1,4 +1,4 @@
-package com.leverx.ratingsystem.service;
+package com.leverx.ratingsystem.service.user;
 
 import com.leverx.ratingsystem.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
-public class UserService implements UserDetailsService {
+public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override

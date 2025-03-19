@@ -2,7 +2,8 @@ package com.leverx.ratingsystem.controller;
 
 import com.leverx.ratingsystem.dto.comment.AdminCommentDto;
 import com.leverx.ratingsystem.dto.user.AdminUserDto;
-import com.leverx.ratingsystem.service.AdminService;
+import com.leverx.ratingsystem.service.admin.AdminService;
+import com.leverx.ratingsystem.service.admin.AdminServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.leverx.ratingsystem.service;
+package com.leverx.ratingsystem.service.auth;
 
 import com.leverx.ratingsystem.dto.auth.AuthRequest;
 import com.leverx.ratingsystem.dto.auth.ForgotPasswordRequest;
@@ -12,6 +12,10 @@ import com.leverx.ratingsystem.model.user.UserEmailStatus;
 import com.leverx.ratingsystem.model.user.UserStatus;
 import com.leverx.ratingsystem.repository.RatingRepository;
 import com.leverx.ratingsystem.repository.UserRepository;
+import com.leverx.ratingsystem.service.confirmation.ConfirmationCodeService;
+import com.leverx.ratingsystem.service.email.EmailService;
+import com.leverx.ratingsystem.service.role.RoleService;
+import com.leverx.ratingsystem.service.user.UserService;
 import com.leverx.ratingsystem.util.ConfirmationCodeGenerator;
 import com.leverx.ratingsystem.util.JwtTokenUtil;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +31,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenUtil jwtTokenUtil;
     private final EmailService emailService;
@@ -40,6 +44,7 @@ public class AuthService {
     private final RoleService roleService;
 
     @Transactional
+    @Override
     public String createAuthToken(AuthRequest authRequest) {
         try {
             authenticationManager.authenticate(
@@ -64,6 +69,7 @@ public class AuthService {
     }
 
     @Transactional
+    @Override
     public void createNewUser(CreateUserRequest createUserRequest) {
         String requestEmail = createUserRequest.email();
         String requestUsername = createUserRequest.username();
@@ -100,6 +106,7 @@ public class AuthService {
     }
 
     @Transactional
+    @Override
     public void verifyUserEmail(VerifyUserEmailRequest verifyUserEmailRequest) {
         String requestEmail = verifyUserEmailRequest.email();
         String requestConfirmationCode = verifyUserEmailRequest.confirmationCode();
@@ -121,6 +128,7 @@ public class AuthService {
     }
 
     @Transactional
+    @Override
     public void forgotPassword(ForgotPasswordRequest forgotPasswordRequest) {
         String requestEmail = forgotPasswordRequest.email();
         if (!userRepository.existsByEmail(requestEmail)) {
@@ -134,6 +142,7 @@ public class AuthService {
     }
 
     @Transactional
+    @Override
     public void resetPassword(ResetPasswordRequest resetPasswordRequest) {
         String requestCode = resetPasswordRequest.confirmationCode();
         if (!confirmationCodeService.exists(requestCode)) {

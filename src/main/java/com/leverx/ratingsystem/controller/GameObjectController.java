@@ -3,7 +3,7 @@ package com.leverx.ratingsystem.controller;
 import com.leverx.ratingsystem.dto.gameobject.CreateGameObjectRequest;
 import com.leverx.ratingsystem.dto.gameobject.GameObjectDto;
 import com.leverx.ratingsystem.dto.gameobject.UpdateGameObjectRequest;
-import com.leverx.ratingsystem.service.GameObjectService;
+import com.leverx.ratingsystem.service.gameobject.GameObjectService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

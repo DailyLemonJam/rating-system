@@ -1,7 +1,7 @@
 package com.leverx.ratingsystem.controller;
 
 import com.leverx.ratingsystem.dto.comment.*;
-import com.leverx.ratingsystem.service.CommentService;
+import com.leverx.ratingsystem.service.comment.CommentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

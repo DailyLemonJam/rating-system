@@ -1,4 +1,4 @@
-package com.leverx.ratingsystem.service;
+package com.leverx.ratingsystem.service.rating;
 
 import com.leverx.ratingsystem.exception.UserRatingNotFoundException;
 import com.leverx.ratingsystem.model.comment.Comment;
@@ -13,11 +13,12 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class RatingService {
+public class RatingServiceImpl implements RatingService {
     private final RatingRepository ratingRepository;
     private final CommentRepository commentRepository;
 
     @Transactional
+    @Override
     public void updateUserRatingByUserId(UUID userId) {
         var rating = ratingRepository.findByUser_Id(userId)
                 .orElseThrow(() -> new UserRatingNotFoundException("Can't find user or his rating"));

@@ -4,7 +4,7 @@ import com.leverx.ratingsystem.config.AppConfiguration;
 import com.leverx.ratingsystem.dto.RatingDto;
 import com.leverx.ratingsystem.dto.comment.CommentDto;
 import com.leverx.ratingsystem.dto.gameobject.GameObjectDto;
-import com.leverx.ratingsystem.service.SellerProfileService;
+import com.leverx.ratingsystem.service.profile.SellerProfileService;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;

@@ -43,8 +43,18 @@ public class CommentServiceImpl implements CommentService {
     @Transactional(readOnly = true)
     @Override
     public List<CommentDto> getAllComments(UUID userId, String keyword) {
-        var comments = commentRepository.findAllByUser_IdAndMessageContainsIgnoreCase(userId, keyword);
-        return commentMapper.toDto(comments);
+        if (userId != null) {
+            if (keyword != null) {
+                return commentMapper.toDto(commentRepository
+                        .findAllByUser_IdAndMessageContainsIgnoreCase(userId, keyword));
+            } else {
+                return commentMapper.toDto(commentRepository.findAllByUser_Id(userId));
+            }
+        }
+        if (keyword != null) {
+            return commentMapper.toDto(commentRepository.findAllByMessageContainsIgnoreCase(keyword));
+        }
+        return commentMapper.toDto(commentRepository.findAll());
     }
 
     @Transactional(readOnly = true)

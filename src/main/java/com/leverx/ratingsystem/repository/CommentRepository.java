@@ -16,4 +16,5 @@ public interface CommentRepository extends JpaRepository<Comment, UUID> {
     List<Comment> findAllByUser_Id(UUID userId);
     Optional<Comment> findByIdAndStatus(UUID userId, CommentStatus status);
     List<Comment> findAllByUser_IdAndMessageContainsIgnoreCase(UUID userId, String keyword);
+    List<Comment> findAllByMessageContainsIgnoreCase(String keyword);
 }

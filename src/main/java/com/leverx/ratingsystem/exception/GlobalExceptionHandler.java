@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDto> handleMethodArgumentNotValidException(Exception e) {
         log.error(e.getMessage());
         log.error(e.getClass().getName());
-        return new ResponseEntity<>(new ErrorDto("Oopsie, something went wrong"), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new ErrorDto("Probably, incorrect value of request"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(CommentNotFoundException.class)

@@ -1,4 +1,4 @@
-package com.leverx.ratingsystem.unit;
+package com.leverx.ratingsystem.service.gameobject;
 
 import com.leverx.ratingsystem.dto.gameobject.CreateGameObjectRequest;
 import com.leverx.ratingsystem.dto.gameobject.GameObjectDto;

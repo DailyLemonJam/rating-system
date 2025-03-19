@@ -1,11 +1,10 @@
-package com.leverx.ratingsystem.unit;
+package com.leverx.ratingsystem.service.rating;
 
 import com.leverx.ratingsystem.model.comment.Comment;
 import com.leverx.ratingsystem.model.comment.CommentStatus;
 import com.leverx.ratingsystem.model.rating.Rating;
 import com.leverx.ratingsystem.repository.CommentRepository;
 import com.leverx.ratingsystem.repository.RatingRepository;
-import com.leverx.ratingsystem.service.rating.RatingServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

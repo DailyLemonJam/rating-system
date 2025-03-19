@@ -1,4 +1,4 @@
-package com.leverx.ratingsystem.service;
+package com.leverx.ratingsystem.service.admin;
 
 import com.leverx.ratingsystem.dto.comment.AdminCommentDto;
 import com.leverx.ratingsystem.dto.user.AdminUserDto;
@@ -11,6 +11,8 @@ import com.leverx.ratingsystem.model.user.User;
 import com.leverx.ratingsystem.model.user.UserStatus;
 import com.leverx.ratingsystem.repository.CommentRepository;
 import com.leverx.ratingsystem.repository.UserRepository;
+import com.leverx.ratingsystem.service.rating.RatingService;
+import com.leverx.ratingsystem.service.rating.RatingServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,7 +22,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class AdminService {
+public class AdminServiceImpl implements AdminService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final ModelDtoMapper<AdminCommentDto, Comment> adminCommentMapper;
@@ -28,12 +30,14 @@ public class AdminService {
     private final RatingService ratingService;
 
     @Transactional(readOnly = true)
+    @Override
     public List<AdminCommentDto> getPendingComments() {
         var pendingComments = commentRepository.findAllByStatus(CommentStatus.PENDING);
         return adminCommentMapper.toDto(pendingComments);
     }
 
     @Transactional
+    @Override
     public void approveComment(UUID commentId) {
         var comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CommentNotFoundException("Comment not found"));
@@ -43,6 +47,7 @@ public class AdminService {
     }
 
     @Transactional
+    @Override
     public void rejectComment(UUID commentId) {
         var comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CommentNotFoundException("Comment not found"));
@@ -51,12 +56,14 @@ public class AdminService {
     }
 
     @Transactional(readOnly = true)
+    @Override
     public List<AdminUserDto> getPendingUsers() {
         var pendingUsers = userRepository.findAllByStatus(UserStatus.PENDING);
         return adminUserMapper.toDto(pendingUsers);
     }
 
     @Transactional
+    @Override
     public void approveUser(UUID userId) {
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
@@ -65,6 +72,7 @@ public class AdminService {
     }
 
     @Transactional
+    @Override
     public void rejectUser(UUID userId) {
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));

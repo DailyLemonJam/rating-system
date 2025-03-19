@@ -1,4 +1,4 @@
-package com.leverx.ratingsystem.service;
+package com.leverx.ratingsystem.service.comment;
 
 import com.leverx.ratingsystem.config.AppConfiguration;
 import com.leverx.ratingsystem.dto.comment.*;
@@ -16,6 +16,10 @@ import com.leverx.ratingsystem.model.user.UserStatus;
 import com.leverx.ratingsystem.repository.CommentRepository;
 import com.leverx.ratingsystem.repository.RatingRepository;
 import com.leverx.ratingsystem.repository.UserRepository;
+import com.leverx.ratingsystem.service.rating.RatingService;
+import com.leverx.ratingsystem.service.rating.RatingServiceImpl;
+import com.leverx.ratingsystem.service.role.RoleService;
+import com.leverx.ratingsystem.service.role.RoleServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,7 +31,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class CommentService {
+public class CommentServiceImpl implements CommentService {
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final RoleService roleService;
@@ -37,12 +41,14 @@ public class CommentService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Transactional(readOnly = true)
+    @Override
     public List<CommentDto> getAllComments(UUID userId, String keyword) {
         var comments = commentRepository.findAllByUser_IdAndMessageContainsIgnoreCase(userId, keyword);
         return commentMapper.toDto(comments);
     }
 
     @Transactional(readOnly = true)
+    @Override
     public CommentDto getCommentById(UUID commentId) {
         var comment = commentRepository.findByIdAndStatus(commentId, CommentStatus.APPROVED)
                 .orElseThrow(() -> new CommentNotFoundException("Comment doesn't exist or wasn't approved"));
@@ -50,6 +56,7 @@ public class CommentService {
     }
 
     @Transactional
+    @Override
     public CommentDto createCommentOnSellerProfile(UUID userId, CreateCommentRequest createCommentRequest) {
         var user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException("User not found"));
@@ -74,6 +81,7 @@ public class CommentService {
     }
 
     @Transactional
+    @Override
     public CommentDto createCommentWithSellerProfile(CreateCommentWithSellerRequest request) {
         if (userRepository.existsByName(request.sellerName())) {
             throw new UserAlreadyExistsException("This seller already exists");
@@ -104,6 +112,7 @@ public class CommentService {
     }
 
     @Transactional
+    @Override
     public CommentDto updateCommentById(UUID commentId, UpdateCommentRequest request) {
         var comment = commentRepository.findById(commentId).
                 orElseThrow(() -> new CommentNotFoundException("Can't find comment with id: " + commentId));
@@ -120,6 +129,7 @@ public class CommentService {
     }
 
     @Transactional
+    @Override
     public void deleteCommentById(UUID commentId, DeleteCommentRequest request) {
         var comment = commentRepository.findById(commentId)
                 .orElseThrow(() -> new CommentNotFoundException("Can't find comment"));

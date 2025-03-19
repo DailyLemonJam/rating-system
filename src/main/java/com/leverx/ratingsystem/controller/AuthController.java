@@ -3,7 +3,7 @@ package com.leverx.ratingsystem.controller;
 import com.leverx.ratingsystem.dto.auth.*;
 import com.leverx.ratingsystem.dto.auth.CreateUserRequest;
 import com.leverx.ratingsystem.dto.auth.CreateUserResponse;
-import com.leverx.ratingsystem.service.AuthService;
+import com.leverx.ratingsystem.service.auth.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -10,7 +10,6 @@ import com.leverx.ratingsystem.repository.GameRepository;
 import com.leverx.ratingsystem.repository.RoleRepository;
 import com.leverx.ratingsystem.repository.UserRepository;
 import com.leverx.ratingsystem.service.role.RoleService;
-import com.leverx.ratingsystem.service.role.RoleServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;

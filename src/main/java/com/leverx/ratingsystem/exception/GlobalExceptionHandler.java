@@ -66,12 +66,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<ErrorDto> handleUserAlreadyExistsException(UserAlreadyExistsException e) {
-        return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(IncorrectUsernameOrPasswordException.class)
     public ResponseEntity<ErrorDto> handleIncorrectUsernameOrPasswordException(IncorrectUsernameOrPasswordException e) {
-        return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ErrorDto(e.getMessage()), HttpStatus.UNAUTHORIZED);
     }
 
     @ExceptionHandler(UserNotAllowedToLoginException.class)
@@ -96,12 +96,12 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorDto> handleIllegalArgumentException(IllegalArgumentException e) {
-        return new ResponseEntity<>(new ErrorDto("One or more arguments are incorrect"), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ErrorDto("One or more arguments are incorrect"), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(HandlerMethodValidationException.class)
     public ResponseEntity<ErrorDto> handleHandlerMethodValidationException(HandlerMethodValidationException e) {
-        return new ResponseEntity<>(new ErrorDto("Incorrect values of arguments"), HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(new ErrorDto("Incorrect values of arguments"), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(IncorrectCommentPasswordException.class)

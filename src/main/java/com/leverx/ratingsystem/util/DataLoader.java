@@ -37,11 +37,15 @@ public class DataLoader implements CommandLineRunner {
     @Value("${admin.password}")
     private String adminPassword;
 
+    private final boolean shouldInit = false;
+
     @Override
     public void run(String... args) {
-        initRoles();
-        initGames();
-        initAdmins();
+        if (shouldInit) {
+            initRoles();
+            initGames();
+            initAdmins();
+        }
     }
 
     private void initRoles() {

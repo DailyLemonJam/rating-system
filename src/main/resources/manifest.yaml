@@ -1,0 +1,16 @@
+applications:
+  - name: rating-system
+    random-route: true
+    instances: 1
+    memory: 1024M
+    disk_quota: 512M
+    buildpacks:
+      - sap_java_buildpack_jakarta
+    env:
+      JBP_CONFIG_MACHINE_SDK: "{ version 17.+ }"
+      JBP_CONFIG_COMPONENTS: "jres: ['com.sap.xs.java.buildpack.jdk.SAPMachineJDK']"
+      TARGET_RUNTIME: tomcat
+
+services:
+  - db-rating-system
+  - redis-rating-system

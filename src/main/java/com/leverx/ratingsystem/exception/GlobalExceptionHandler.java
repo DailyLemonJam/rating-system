@@ -1,11 +1,9 @@
 package com.leverx.ratingsystem.exception;
 
 import com.leverx.ratingsystem.dto.ErrorDto;
-import jakarta.validation.ValidationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.oxm.ValidationFailureException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -31,7 +29,7 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorDto> handleMethodArgumentNotValidException(Exception e) {
         log.error(e.getMessage());
         log.error(e.getClass().getName());
-        return new ResponseEntity<>(new ErrorDto("Oopsie, something went wrong"), HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new ErrorDto("Probably, incorrect value of request"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(CommentNotFoundException.class)

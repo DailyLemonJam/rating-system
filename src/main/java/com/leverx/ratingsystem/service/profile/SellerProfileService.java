@@ -3,7 +3,6 @@ package com.leverx.ratingsystem.service.profile;
 import com.leverx.ratingsystem.dto.RatingDto;
 import com.leverx.ratingsystem.dto.comment.CommentDto;
 import com.leverx.ratingsystem.dto.gameobject.GameObjectDto;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.UUID;

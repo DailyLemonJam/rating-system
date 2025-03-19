@@ -12,7 +12,6 @@ import com.leverx.ratingsystem.model.user.UserStatus;
 import com.leverx.ratingsystem.repository.CommentRepository;
 import com.leverx.ratingsystem.repository.UserRepository;
 import com.leverx.ratingsystem.service.rating.RatingService;
-import com.leverx.ratingsystem.service.rating.RatingServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
